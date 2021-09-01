@@ -105,7 +105,7 @@ class Vector2(Structure):
         self.y = y
 
     def __eq__(self, obj):
-        self.x == obj.x and self.y == obj.y
+        return self.x == obj.x and self.y == obj.y
 
 class Matrix3(Structure):
     _fields_ = [
@@ -133,7 +133,7 @@ class Matrix3(Structure):
         self.i = tmp.i
 
     def __eq__(self, obj):
-        self.a == obj.a and self.b == obj.b and self.c == obj.c and self.d == obj.d and self.e == obj.e and self.f == obj.f and self.g == obj.g and self.h == obj.h and self.i == obj.i
+        return self.a == obj.a and self.b == obj.b and self.c == obj.c and self.d == obj.d and self.e == obj.e and self.f == obj.f and self.g == obj.g and self.h == obj.h and self.i == obj.i
 
 class Rect(Structure):
     _fields_ = [
@@ -150,7 +150,7 @@ class Rect(Structure):
         self.h = h
 
     def __eq__(self, obj):
-        self.x == obj.x and self.y == obj.y and self.w == obj.w and self.h == obj.h
+        return self.x == obj.x and self.y == obj.y and self.w == obj.w and self.h == obj.h
 
 class Color(Structure):
     _fields_ = [
@@ -167,7 +167,7 @@ class Color(Structure):
         self.a = a
 
     def __eq__(self, obj):
-        self.r == obj.r and self.g == obj.g and self.b == obj.b and self.a == obj.a
+        return self.r == obj.r and self.g == obj.g and self.b == obj.b and self.a == obj.a
 
 class ColorStop(Structure):
     _fields_ = [
@@ -180,7 +180,7 @@ class ColorStop(Structure):
         self.position = position
 
     def __eq__(self, obj):
-        self.color == obj.color and self.position == obj.position
+        return self.color == obj.color and self.position == obj.position
 
 class TextMetrics(Structure):
     _fields_ = [
@@ -191,7 +191,7 @@ class TextMetrics(Structure):
         self.width = width
 
     def __eq__(self, obj):
-        self.width == obj.width
+        return self.width == obj.width
 
 class SeqFloat32(Structure):
     _fields_ = [("ref", c_ulonglong)]
@@ -429,6 +429,8 @@ class Image(Structure):
             transform = Matrix3()
         if bounds is None:
             bounds = Vector2(0, 0)
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_image_stroke_text(self, font, text.encode("utf8"), transform, stroke_width, bounds, h_align, v_align, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
@@ -436,6 +438,8 @@ class Image(Structure):
     def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         if transform is None:
             transform = Matrix3()
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_image_arrangement_stroke_text(self, arrangement, transform, stroke_width, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
@@ -450,6 +454,8 @@ class Image(Structure):
     def stroke_path(self, path, paint, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         if transform is None:
             transform = Matrix3()
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_image_stroke_path(self, path, paint, transform, stroke_width, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
@@ -583,6 +589,8 @@ class Mask(Structure):
             transform = Matrix3()
         if bounds is None:
             bounds = Vector2(0, 0)
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_mask_stroke_text(self, font, text.encode("utf8"), transform, stroke_width, bounds, h_align, v_align, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
@@ -590,6 +598,8 @@ class Mask(Structure):
     def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         if transform is None:
             transform = Matrix3()
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_mask_arrangement_stroke_text(self, arrangement, transform, stroke_width, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
@@ -604,6 +614,8 @@ class Mask(Structure):
     def stroke_path(self, path, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None, blend_mode = BM_NORMAL):
         if transform is None:
             transform = Matrix3()
+        if dashes is None:
+            dashes = SeqFloat32()
         dll.pixie_mask_stroke_path(self, path, transform, stroke_width, line_cap, line_join, miter_limit, dashes, blend_mode)
         if check_error():
             raise PixieError(take_error())
@@ -774,6 +786,8 @@ class Path(Structure):
     def stroke_overlaps(self, test, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         if transform is None:
             transform = Matrix3()
+        if dashes is None:
+            dashes = SeqFloat32()
         result = dll.pixie_path_stroke_overlaps(self, test, transform, stroke_width, line_cap, line_join, miter_limit, dashes)
         if check_error():
             raise PixieError(take_error())
