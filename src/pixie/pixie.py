@@ -808,7 +808,7 @@ class Path(Structure):
     def elliptical_arc_to(self, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x, y):
         dll.pixie_path_elliptical_arc_to(self, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x, y)
 
-    def arc(self, x, y, r, a_0, a_1, ccw):
+    def arc(self, x, y, r, a_0, a_1, ccw = False):
         dll.pixie_path_arc(self, x, y, r, a_0, a_1, ccw)
         if check_error():
             raise PixieError(take_error())
