@@ -360,7 +360,7 @@ class Image(Structure):
 
     def blur(self, radius, out_of_bounds = None):
         if out_of_bounds is None:
-            out_of_bounds = Color()
+            out_of_bounds = Color(0, 0, 0, 0)
         dll.pixie_image_blur(self, radius, out_of_bounds)
         if check_error():
             raise PixieError(take_error())

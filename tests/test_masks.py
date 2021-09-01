@@ -1,5 +1,12 @@
 import pixie
 
+def test_error():
+    try:
+        mask = pixie.Mask(-100, -100)
+    except:
+        return
+    assert False # Should go into except block and return
+
 def test_basic():
     mask = pixie.Mask(100, 100)
     assert mask.width == 100
