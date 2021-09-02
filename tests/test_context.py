@@ -122,8 +122,8 @@ def test_text():
     context = pixie.Context(100, 100)
     context.font = "tests/fonts/Roboto-Regular_1.ttf"
 
-    # metrics = context.measure_text("Hello world")
-    # assert metrics.width == 61
+    metrics = context.measure_text("Hello world")
+    assert metrics.width == 61
 
     context.fill_text("test", 0, 0)
     context.stroke_text("text", 0, 0)
