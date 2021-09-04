@@ -260,12 +260,23 @@ class SeqSpan(Structure):
         dll.pixie_seq_span_clear(self)
 
     def typeset(self, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, wrap = True):
+        """
+        Lays out the character glyphs and returns the arrangement.
+        Optional parameters:
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        wrap: enable/disable text wrapping
+        """
         if bounds is None:
             bounds = Vector2(0, 0)
         result = dll.pixie_seq_span_typeset(self, bounds, h_align, v_align, wrap)
         return result
 
     def compute_bounds(self):
+        """
+        Computes the width and height of the spans in pixels.
+        """
         result = dll.pixie_seq_span_compute_bounds(self)
         return result
 
@@ -304,61 +315,103 @@ class Image(Structure):
         dll.pixie_image_set_height(self, height)
 
     def write_file(self, file_path):
+        """
+        Writes an image to a file.
+        """
         dll.pixie_image_write_file(self, file_path.encode("utf8"))
         if check_error():
             raise PixieError(take_error())
 
     def wh(self):
+        """
+        Return with and height as a size vector.
+        """
         result = dll.pixie_image_wh(self)
         return result
 
     def copy(self):
+        """
+        Copies the image data into a new image.
+        """
         result = dll.pixie_image_copy(self)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def get_color(self, x, y):
+        """
+        Gets a color at (x, y) or returns transparent black if outside of bounds.
+        """
         result = dll.pixie_image_get_color(self, x, y)
         return result
 
     def set_color(self, x, y, color):
+        """
+        Sets a color at (x, y) or does nothing if outside of bounds.
+        """
         dll.pixie_image_set_color(self, x, y, color)
 
     def fill(self, color):
+        """
+        Fills the image with the parameter color.
+        """
         dll.pixie_image_fill(self, color)
 
     def flip_horizontal(self):
+        """
+        Flips the image around the Y axis.
+        """
         dll.pixie_image_flip_horizontal(self)
 
     def flip_vertical(self):
+        """
+        Flips the image around the X axis.
+        """
         dll.pixie_image_flip_vertical(self)
 
     def sub_image(self, x, y, w, h):
+        """
+        Gets a sub image from this image.
+        """
         result = dll.pixie_image_sub_image(self, x, y, w, h)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def minify_by_2(self, power = 1):
+        """
+        Scales the image down by an integer scale.
+        """
         result = dll.pixie_image_minify_by_2(self, power)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def magnify_by_2(self, power = 1):
+        """
+        Scales image up by 2 ^ power.
+        """
         result = dll.pixie_image_magnify_by_2(self, power)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def apply_opacity(self, opacity):
+        """
+        Multiplies alpha of the image by opacity.
+        """
         dll.pixie_image_apply_opacity(self, opacity)
 
     def invert(self):
+        """
+        Inverts all of the colors and alpha.
+        """
         dll.pixie_image_invert(self)
 
     def blur(self, radius, out_of_bounds = None):
+        """
+        Applies Gaussian blur to the image given a radius.
+        """
         if out_of_bounds is None:
             out_of_bounds = Color(0, 0, 0, 0)
         dll.pixie_image_blur(self, radius, out_of_bounds)
@@ -366,30 +419,45 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def new_mask(self):
+        """
+        Returns a new mask using the alpha values of the parameter image.
+        """
         result = dll.pixie_image_new_mask(self)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def resize(self, width, height):
+        """
+        Resize an image to a given height and width.
+        """
         result = dll.pixie_image_resize(self, width, height)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def shadow(self, offset, spread, blur, color):
+        """
+        Create a shadow of the image with the offset, spread and blur.
+        """
         result = dll.pixie_image_shadow(self, offset, spread, blur, color)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def super_image(self, x, y, w, h):
+        """
+        Either cuts a sub image or returns a super image with padded transparency.
+        """
         result = dll.pixie_image_super_image(self, x, y, w, h)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def draw(self, b, transform = None, blend_mode = BM_NORMAL):
+        """
+        Draws one image onto another using matrix with color blending.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_image_draw(self, b, transform, blend_mode)
@@ -397,6 +465,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def mask_draw(self, mask, transform = None, blend_mode = BM_MASK):
+        """
+        Draws a mask onto an image using a matrix with color blending.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_image_mask_draw(self, mask, transform, blend_mode)
@@ -404,11 +475,21 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def fill_gradient(self, paint):
+        """
+        Fills with the Paint gradient.
+        """
         dll.pixie_image_fill_gradient(self, paint)
         if check_error():
             raise PixieError(take_error())
 
     def fill_text(self, font, text, transform = None, bounds = None, h_align = HA_LEFT, v_align = VA_TOP):
+        """
+        Typesets and fills the text. Optional parameters:
+        transform: translation or matrix to apply
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        """
         if transform is None:
             transform = Matrix3()
         if bounds is None:
@@ -418,6 +499,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def arrangement_fill_text(self, arrangement, transform = None):
+        """
+        Fills the text arrangement.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_image_arrangement_fill_text(self, arrangement, transform)
@@ -425,6 +509,15 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Typesets and strokes the text. Optional parameters:
+        transform: translation or matrix to apply
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        lineCap: stroke line cap shape
+        lineJoin: stroke line join shape
+        """
         if transform is None:
             transform = Matrix3()
         if bounds is None:
@@ -436,6 +529,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Strokes the text arrangement.
+        """
         if transform is None:
             transform = Matrix3()
         if dashes is None:
@@ -445,6 +541,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def fill_path(self, path, paint, transform = None, winding_rule = WR_NON_ZERO):
+        """
+        Fills a path.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_image_fill_path(self, path, paint, transform, winding_rule)
@@ -452,6 +551,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def stroke_path(self, path, paint, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Strokes a path.
+        """
         if transform is None:
             transform = Matrix3()
         if dashes is None:
@@ -461,6 +563,9 @@ class Image(Structure):
             raise PixieError(take_error())
 
     def new_context(self):
+        """
+        Create a new Context that will draw to the parameter image.
+        """
         result = dll.pixie_image_new_context(self)
         return result
 
@@ -499,42 +604,69 @@ class Mask(Structure):
         dll.pixie_mask_set_height(self, height)
 
     def write_file(self, file_path):
+        """
+        Writes a mask to a file.
+        """
         dll.pixie_mask_write_file(self, file_path.encode("utf8"))
         if check_error():
             raise PixieError(take_error())
 
     def wh(self):
+        """
+        Return with and height as a size vector.
+        """
         result = dll.pixie_mask_wh(self)
         return result
 
     def copy(self):
+        """
+        Copies the image data into a new image.
+        """
         result = dll.pixie_mask_copy(self)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def get_value(self, x, y):
+        """
+        Gets a value at (x, y) or returns transparent black if outside of bounds.
+        """
         result = dll.pixie_mask_get_value(self, x, y)
         return result
 
     def set_value(self, x, y, value):
+        """
+        Sets a value at (x, y) or does nothing if outside of bounds.
+        """
         dll.pixie_mask_set_value(self, x, y, value)
 
     def fill(self, value):
+        """
+        Fills the mask with the parameter value.
+        """
         dll.pixie_mask_fill(self, value)
 
     def minify_by_2(self, power = 1):
+        """
+        Scales the mask down by an integer scale.
+        """
         result = dll.pixie_mask_minify_by_2(self, power)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def spread(self, spread):
+        """
+        Grows the mask by spread.
+        """
         dll.pixie_mask_spread(self, spread)
         if check_error():
             raise PixieError(take_error())
 
     def ceil(self):
+        """
+        A value of 0 stays 0. Anything else turns into 255.
+        """
         dll.pixie_mask_ceil(self)
 
     def new_image(self):
@@ -544,17 +676,29 @@ class Mask(Structure):
         return result
 
     def apply_opacity(self, opacity):
+        """
+        Multiplies alpha of the image by opacity.
+        """
         dll.pixie_mask_apply_opacity(self, opacity)
 
     def invert(self):
+        """
+        Inverts all of the colors and alpha.
+        """
         dll.pixie_mask_invert(self)
 
     def blur(self, radius, out_of_bounds = 0):
+        """
+        Applies Gaussian blur to the image given a radius.
+        """
         dll.pixie_mask_blur(self, radius, out_of_bounds)
         if check_error():
             raise PixieError(take_error())
 
     def draw(self, b, transform = None, blend_mode = BM_MASK):
+        """
+        Draws a mask onto a mask using a matrix with color blending.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_mask_draw(self, b, transform, blend_mode)
@@ -562,6 +706,9 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def image_draw(self, image, transform = None, blend_mode = BM_MASK):
+        """
+        Draws a image onto a mask using a matrix with color blending.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_mask_image_draw(self, image, transform, blend_mode)
@@ -569,6 +716,13 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def fill_text(self, font, text, transform = None, bounds = None, h_align = HA_LEFT, v_align = VA_TOP):
+        """
+        Typesets and fills the text. Optional parameters:
+        transform: translation or matrix to apply
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        """
         if transform is None:
             transform = Matrix3()
         if bounds is None:
@@ -578,6 +732,9 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def arrangement_fill_text(self, arrangement, transform = None):
+        """
+        Fills the text arrangement.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_mask_arrangement_fill_text(self, arrangement, transform)
@@ -585,6 +742,15 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Typesets and strokes the text. Optional parameters:
+        transform: translation or matrix to apply
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        lineCap: stroke line cap shape
+        lineJoin: stroke line join shape
+        """
         if transform is None:
             transform = Matrix3()
         if bounds is None:
@@ -596,6 +762,9 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Strokes the text arrangement.
+        """
         if transform is None:
             transform = Matrix3()
         if dashes is None:
@@ -605,6 +774,9 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def fill_path(self, path, transform = None, winding_rule = WR_NON_ZERO, blend_mode = BM_NORMAL):
+        """
+        Fills a path.
+        """
         if transform is None:
             transform = Matrix3()
         dll.pixie_mask_fill_path(self, path, transform, winding_rule, blend_mode)
@@ -612,6 +784,9 @@ class Mask(Structure):
             raise PixieError(take_error())
 
     def stroke_path(self, path, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None, blend_mode = BM_NORMAL):
+        """
+        Strokes a path.
+        """
         if transform is None:
             transform = Matrix3()
         if dashes is None:
@@ -739,6 +914,9 @@ class Paint(Structure):
         return self.PaintGradientStops(self)
 
     def new_paint(self):
+        """
+        Create a new Paint with the same properties.
+        """
         result = dll.pixie_paint_new_paint(self)
         return result
 
@@ -759,15 +937,29 @@ class Path(Structure):
         self.ref = result
 
     def transform(self, mat):
+        """
+        Apply a matrix transform to a path.
+        """
         dll.pixie_path_transform(self, mat)
 
     def add_path(self, other):
+        """
+        Adds a path to the current path.
+        """
         dll.pixie_path_add_path(self, other)
 
     def close_path(self):
+        """
+        Attempts to add a straight line from the current point to the start of
+        the current sub-path. If the shape has already been closed or has only
+        one point, this function does nothing.
+        """
         dll.pixie_path_close_path(self)
 
     def compute_bounds(self, transform = None):
+        """
+        Compute the bounds of the path.
+        """
         if transform is None:
             transform = Matrix3()
         result = dll.pixie_path_compute_bounds(self, transform)
@@ -776,6 +968,9 @@ class Path(Structure):
         return result
 
     def fill_overlaps(self, test, transform = None, winding_rule = WR_NON_ZERO):
+        """
+        Returns whether or not the specified point is contained in the current path.
+        """
         if transform is None:
             transform = Matrix3()
         result = dll.pixie_path_fill_overlaps(self, test, transform, winding_rule)
@@ -784,6 +979,10 @@ class Path(Structure):
         return result
 
     def stroke_overlaps(self, test, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+        """
+        Returns whether or not the specified point is inside the area contained
+        by the stroking of a path.
+        """
         if transform is None:
             transform = Matrix3()
         if dashes is None:
@@ -794,43 +993,93 @@ class Path(Structure):
         return result
 
     def move_to(self, x, y):
+        """
+        Begins a new sub-path at the point (x, y).
+        """
         dll.pixie_path_move_to(self, x, y)
 
     def line_to(self, x, y):
+        """
+        Adds a straight line to the current sub-path by connecting the sub-path's
+        last point to the specified (x, y) coordinates.
+        """
         dll.pixie_path_line_to(self, x, y)
 
     def bezier_curve_to(self, x_1, y_1, x_2, y_2, x_3, y_3):
+        """
+        Adds a cubic Bézier curve to the current sub-path. It requires three
+        points: the first two are control points and the third one is the end
+        point. The starting point is the latest point in the current path,
+        which can be changed using moveTo() before creating the Bézier curve.
+        """
         dll.pixie_path_bezier_curve_to(self, x_1, y_1, x_2, y_2, x_3, y_3)
 
     def quadratic_curve_to(self, x_1, y_1, x_2, y_2):
+        """
+        Adds a quadratic Bézier curve to the current sub-path. It requires two
+        points: the first one is a control point and the second one is the end
+        point. The starting point is the latest point in the current path,
+        which can be changed using moveTo() before creating the quadratic
+        Bézier curve.
+        """
         dll.pixie_path_quadratic_curve_to(self, x_1, y_1, x_2, y_2)
 
     def elliptical_arc_to(self, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x, y):
+        """
+        Adds an elliptical arc to the current sub-path, using the given radius
+        ratios, sweep flags, and end position.
+        """
         dll.pixie_path_elliptical_arc_to(self, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x, y)
 
     def arc(self, x, y, r, a_0, a_1, ccw = False):
+        """
+        Adds a circular arc to the current sub-path.
+        """
         dll.pixie_path_arc(self, x, y, r, a_0, a_1, ccw)
         if check_error():
             raise PixieError(take_error())
 
     def arc_to(self, x_1, y_1, x_2, y_2, r):
+        """
+        Adds a circular arc using the given control points and radius.
+        Commonly used for making rounded corners.
+        """
         dll.pixie_path_arc_to(self, x_1, y_1, x_2, y_2, r)
         if check_error():
             raise PixieError(take_error())
 
     def rect(self, x, y, w, h, clockwise = True):
+        """
+        Adds a rectangle.
+        Clockwise param can be used to subtract a rect from a path when using
+        even-odd winding rule.
+        """
         dll.pixie_path_rect(self, x, y, w, h, clockwise)
 
     def rounded_rect(self, x, y, w, h, nw, ne, se, sw, clockwise = True):
+        """
+        Adds a rounded rectangle.
+        Clockwise param can be used to subtract a rect from a path when using
+        even-odd winding rule.
+        """
         dll.pixie_path_rounded_rect(self, x, y, w, h, nw, ne, se, sw, clockwise)
 
     def ellipse(self, cx, cy, rx, ry):
+        """
+        Adds a ellipse.
+        """
         dll.pixie_path_ellipse(self, cx, cy, rx, ry)
 
     def circle(self, cx, cy, r):
+        """
+        Adds a circle.
+        """
         dll.pixie_path_circle(self, cx, cy, r)
 
     def polygon(self, x, y, size, sides):
+        """
+        Adds an n-sided regular polygon at (x, y) with the parameter size.
+        """
         dll.pixie_path_polygon(self, x, y, size, sides)
 
 class Typeface(Structure):
@@ -854,32 +1103,53 @@ class Typeface(Structure):
         dll.pixie_typeface_set_file_path(self, file_path.encode("utf8"))
 
     def ascent(self):
+        """
+        The font ascender value in font units.
+        """
         result = dll.pixie_typeface_ascent(self)
         return result
 
     def descent(self):
+        """
+        The font descender value in font units.
+        """
         result = dll.pixie_typeface_descent(self)
         return result
 
     def line_gap(self):
+        """
+        The font line gap value in font units.
+        """
         result = dll.pixie_typeface_line_gap(self)
         return result
 
     def line_height(self):
+        """
+        The default line height in font units.
+        """
         result = dll.pixie_typeface_line_height(self)
         return result
 
     def get_glyph_path(self, rune):
+        """
+        The glyph path for the rune.
+        """
         result = dll.pixie_typeface_get_glyph_path(self, rune)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def get_advance(self, rune):
+        """
+        The advance for the rune in pixels.
+        """
         result = dll.pixie_typeface_get_advance(self, rune)
         return result
 
     def get_kerning_adjustment(self, left, right):
+        """
+        The kerning adjustment for the rune pair, in pixels.
+        """
         result = dll.pixie_typeface_get_kerning_adjustment(self, left, right)
         return result
 
@@ -983,20 +1253,37 @@ class Font(Structure):
         dll.pixie_font_set_no_kerning_adjustments(self, no_kerning_adjustments)
 
     def scale(self):
+        """
+        The scale factor to transform font units into pixels.
+        """
         result = dll.pixie_font_scale(self)
         return result
 
     def default_line_height(self):
+        """
+        The default line height in pixels for the current font size.
+        """
         result = dll.pixie_font_default_line_height(self)
         return result
 
     def typeset(self, text, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, wrap = True):
+        """
+        Lays out the character glyphs and returns the arrangement.
+        Optional parameters:
+        bounds: width determines wrapping and hAlign, height for vAlign
+        hAlign: horizontal alignment of the text
+        vAlign: vertical alignment of the text
+        wrap: enable/disable text wrapping
+        """
         if bounds is None:
             bounds = Vector2(0, 0)
         result = dll.pixie_font_typeset(self, text.encode("utf8"), bounds, h_align, v_align, wrap)
         return result
 
     def compute_bounds(self, text):
+        """
+        Computes the width and height of the text in pixels.
+        """
         result = dll.pixie_font_compute_bounds(self, text.encode("utf8"))
         return result
 
@@ -1045,6 +1332,9 @@ class Arrangement(Structure):
         dll.pixie_arrangement_unref(self)
 
     def compute_bounds(self):
+        """
+        Computes the width and height of the arrangement in pixels.
+        """
         result = dll.pixie_arrangement_compute_bounds(self)
         return result
 
@@ -1155,73 +1445,134 @@ class Context(Structure):
         dll.pixie_context_set_text_align(self, text_align)
 
     def save(self):
+        """
+        Saves the entire state of the context by pushing the current state onto
+        a stack.
+        """
         dll.pixie_context_save(self)
         if check_error():
             raise PixieError(take_error())
 
     def save_layer(self):
+        """
+        Saves the entire state of the context by pushing the current state onto
+        a stack and allocates a new image layer for subsequent drawing. Calling
+        restore blends the current layer image onto the prior layer or root image.
+        """
         dll.pixie_context_save_layer(self)
         if check_error():
             raise PixieError(take_error())
 
     def restore(self):
+        """
+        Restores the most recently saved context state by popping the top entry
+        in the drawing state stack. If there is no saved state, this method does
+        nothing.
+        """
         dll.pixie_context_restore(self)
         if check_error():
             raise PixieError(take_error())
 
     def begin_path(self):
+        """
+        Starts a new path by emptying the list of sub-paths.
+        """
         dll.pixie_context_begin_path(self)
 
     def close_path(self):
+        """
+        Attempts to add a straight line from the current point to the start of
+        the current sub-path. If the shape has already been closed or has only
+        one point, this function does nothing.
+        """
         dll.pixie_context_close_path(self)
 
     def fill(self, winding_rule = WR_NON_ZERO):
+        """
+        Fills the current path with the current fillStyle.
+        """
         dll.pixie_context_fill(self, winding_rule)
         if check_error():
             raise PixieError(take_error())
 
     def path_fill(self, path, winding_rule = WR_NON_ZERO):
+        """
+        Fills the path with the current fillStyle.
+        """
         dll.pixie_context_path_fill(self, path, winding_rule)
         if check_error():
             raise PixieError(take_error())
 
     def clip(self, winding_rule = WR_NON_ZERO):
+        """
+        Turns the current path into the current clipping region. The previous
+        clipping region, if any, is intersected with the current or given path
+        to create the new clipping region.
+        """
         dll.pixie_context_clip(self, winding_rule)
         if check_error():
             raise PixieError(take_error())
 
     def path_clip(self, path, winding_rule = WR_NON_ZERO):
+        """
+        Turns the path into the current clipping region. The previous clipping
+        region, if any, is intersected with the current or given path to create
+        the new clipping region.
+        """
         dll.pixie_context_path_clip(self, path, winding_rule)
         if check_error():
             raise PixieError(take_error())
 
     def stroke(self):
+        """
+        Strokes (outlines) the current or given path with the current strokeStyle.
+        """
         dll.pixie_context_stroke(self)
         if check_error():
             raise PixieError(take_error())
 
     def path_stroke(self, path):
+        """
+        Strokes (outlines) the current or given path with the current strokeStyle.
+        """
         dll.pixie_context_path_stroke(self, path)
         if check_error():
             raise PixieError(take_error())
 
     def measure_text(self, text):
+        """
+        Returns a TextMetrics object that contains information about the measured
+        text (such as its width, for example).
+        """
         result = dll.pixie_context_measure_text(self, text.encode("utf8"))
         if check_error():
             raise PixieError(take_error())
         return result
 
     def get_transform(self):
+        """
+        Retrieves the current transform matrix being applied to the context.
+        """
         result = dll.pixie_context_get_transform(self)
         return result
 
     def set_transform(self, transform):
+        """
+        Overrides the transform matrix being applied to the context.
+        """
         dll.pixie_context_set_transform(self, transform)
 
     def transform(self, transform):
+        """
+        Multiplies the current transform with the matrix described by the
+        arguments of this method.
+        """
         dll.pixie_context_transform(self, transform)
 
     def reset_transform(self):
+        """
+        Resets the current transform to the identity matrix.
+        """
         dll.pixie_context_reset_transform(self)
 
     def draw_image_1(self, image, dx, dy):
@@ -1240,135 +1591,239 @@ class Context(Structure):
             raise PixieError(take_error())
 
     def move_to(self, x, y):
+        """
+        Begins a new sub-path at the point (x, y).
+        """
         dll.pixie_context_move_to(self, x, y)
 
     def line_to(self, x, y):
+        """
+        Adds a straight line to the current sub-path by connecting the sub-path's
+        last point to the specified (x, y) coordinates.
+        """
         dll.pixie_context_line_to(self, x, y)
 
     def bezier_curve_to(self, cp_1x, cp_1y, cp_2x, cp_2y, x, y):
+        """
+        Adds a cubic Bézier curve to the current sub-path. It requires three
+        points: the first two are control points and the third one is the end
+        point. The starting point is the latest point in the current path,
+        which can be changed using moveTo() before creating the Bézier curve.
+        """
         dll.pixie_context_bezier_curve_to(self, cp_1x, cp_1y, cp_2x, cp_2y, x, y)
 
     def quadratic_curve_to(self, cpx, cpy, x, y):
+        """
+        Adds a quadratic Bézier curve to the current sub-path. It requires two
+        points: the first one is a control point and the second one is the end
+        point. The starting point is the latest point in the current path,
+        which can be changed using moveTo() before creating the quadratic
+        Bézier curve.
+        """
         dll.pixie_context_quadratic_curve_to(self, cpx, cpy, x, y)
 
     def arc(self, x, y, r, a_0, a_1, ccw = False):
+        """
+        Draws a circular arc.
+        """
         dll.pixie_context_arc(self, x, y, r, a_0, a_1, ccw)
         if check_error():
             raise PixieError(take_error())
 
     def arc_to(self, x_1, y_1, x_2, y_2, radius):
+        """
+        Draws a circular arc using the given control points and radius.
+        """
         dll.pixie_context_arc_to(self, x_1, y_1, x_2, y_2, radius)
         if check_error():
             raise PixieError(take_error())
 
     def rect(self, x, y, width, height):
+        """
+        Adds a rectangle to the current path.
+        """
         dll.pixie_context_rect(self, x, y, width, height)
 
     def rounded_rect(self, x, y, w, h, nw, ne, se, sw):
+        """
+        Adds a rounded rectangle to the current path.
+        """
         dll.pixie_context_rounded_rect(self, x, y, w, h, nw, ne, se, sw)
 
     def ellipse(self, x, y, rx, ry):
+        """
+        Adds an ellipse to the current sub-path.
+        """
         dll.pixie_context_ellipse(self, x, y, rx, ry)
 
     def circle(self, cx, cy, r):
+        """
+        Adds a circle to the current path.
+        """
         dll.pixie_context_circle(self, cx, cy, r)
 
     def polygon(self, x, y, size, sides):
+        """
+        Adds an n-sided regular polygon at (x, y) of size to the current path.
+        """
         dll.pixie_context_polygon(self, x, y, size, sides)
 
     def clear_rect(self, x, y, width, height):
+        """
+        Erases the pixels in a rectangular area.
+        """
         dll.pixie_context_clear_rect(self, x, y, width, height)
         if check_error():
             raise PixieError(take_error())
 
     def fill_rect(self, x, y, width, height):
+        """
+        Draws a rectangle that is filled according to the current fillStyle.
+        """
         dll.pixie_context_fill_rect(self, x, y, width, height)
         if check_error():
             raise PixieError(take_error())
 
     def stroke_rect(self, x, y, width, height):
+        """
+        Draws a rectangle that is stroked (outlined) according to the current
+        strokeStyle and other context settings.
+        """
         dll.pixie_context_stroke_rect(self, x, y, width, height)
         if check_error():
             raise PixieError(take_error())
 
     def fill_text(self, text, x, y):
+        """
+        Draws the outlines of the characters of a text string at the specified
+        coordinates.
+        """
         dll.pixie_context_fill_text(self, text.encode("utf8"), x, y)
         if check_error():
             raise PixieError(take_error())
 
     def stroke_text(self, text, x, y):
+        """
+        Draws the outlines of the characters of a text string at the specified
+        coordinates.
+        """
         dll.pixie_context_stroke_text(self, text.encode("utf8"), x, y)
         if check_error():
             raise PixieError(take_error())
 
     def translate(self, x, y):
+        """
+        Adds a translation transformation to the current matrix.
+        """
         dll.pixie_context_translate(self, x, y)
 
     def scale(self, x, y):
+        """
+        Adds a scaling transformation to the context units horizontally and/or
+        vertically.
+        """
         dll.pixie_context_scale(self, x, y)
 
     def rotate(self, angle):
+        """
+        Adds a rotation to the transformation matrix.
+        """
         dll.pixie_context_rotate(self, angle)
 
     def is_point_in_path(self, x, y, winding_rule = WR_NON_ZERO):
+        """
+        Returns whether or not the specified point is contained in the current path.
+        """
         result = dll.pixie_context_is_point_in_path(self, x, y, winding_rule)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def path_is_point_in_path(self, path, x, y, winding_rule = WR_NON_ZERO):
+        """
+        Returns whether or not the specified point is contained in the current path.
+        """
         result = dll.pixie_context_path_is_point_in_path(self, path, x, y, winding_rule)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def is_point_in_stroke(self, x, y):
+        """
+        Returns whether or not the specified point is inside the area contained
+        by the stroking of a path.
+        """
         result = dll.pixie_context_is_point_in_stroke(self, x, y)
         if check_error():
             raise PixieError(take_error())
         return result
 
     def path_is_point_in_stroke(self, path, x, y):
+        """
+        Returns whether or not the specified point is inside the area contained
+        by the stroking of a path.
+        """
         result = dll.pixie_context_path_is_point_in_stroke(self, path, x, y)
         if check_error():
             raise PixieError(take_error())
         return result
 
 def read_image(file_path):
+    """
+    Loads an image from a file.
+    """
     result = dll.pixie_read_image(file_path.encode("utf8"))
     if check_error():
         raise PixieError(take_error())
     return result
 
 def read_mask(file_path):
+    """
+    Loads a mask from a file.
+    """
     result = dll.pixie_read_mask(file_path.encode("utf8"))
     if check_error():
         raise PixieError(take_error())
     return result
 
 def read_typeface(file_path):
+    """
+    Loads a typeface from a file.
+    """
     result = dll.pixie_read_typeface(file_path.encode("utf8"))
     if check_error():
         raise PixieError(take_error())
     return result
 
 def read_font(file_path):
+    """
+    Loads a font from a file.
+    """
     result = dll.pixie_read_font(file_path.encode("utf8"))
     if check_error():
         raise PixieError(take_error())
     return result
 
 def parse_path(path):
+    """
+    Converts a SVG style path string into seq of commands.
+    """
     result = dll.pixie_parse_path(path.encode("utf8"))
     if check_error():
         raise PixieError(take_error())
     return result
 
 def miter_limit_to_angle(limit):
+    """
+    Converts miter-limit-ratio to miter-limit-angle.
+    """
     result = dll.pixie_miter_limit_to_angle(limit)
     return result
 
 def angle_to_miter_limit(angle):
+    """
+    Converts miter-limit-angle to miter-limit-ratio.
+    """
     result = dll.pixie_angle_to_miter_limit(angle)
     return result
 
