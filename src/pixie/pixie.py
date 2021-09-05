@@ -1960,31 +1960,31 @@ dll.pixie_image_shadow.restype = Image
 dll.pixie_image_super_image.argtypes = [Image, c_longlong, c_longlong, c_longlong, c_longlong]
 dll.pixie_image_super_image.restype = Image
 
-dll.pixie_image_draw.argtypes = [Image, Image, POINTER(Matrix3), BlendMode]
+dll.pixie_image_draw.argtypes = [Image, Image, Matrix3, BlendMode]
 dll.pixie_image_draw.restype = None
 
-dll.pixie_image_mask_draw.argtypes = [Image, Mask, POINTER(Matrix3), BlendMode]
+dll.pixie_image_mask_draw.argtypes = [Image, Mask, Matrix3, BlendMode]
 dll.pixie_image_mask_draw.restype = None
 
 dll.pixie_image_fill_gradient.argtypes = [Image, Paint]
 dll.pixie_image_fill_gradient.restype = None
 
-dll.pixie_image_fill_text.argtypes = [Image, Font, c_char_p, POINTER(Matrix3), Vector2, HorizontalAlignment, VerticalAlignment]
+dll.pixie_image_fill_text.argtypes = [Image, Font, c_char_p, Matrix3, Vector2, HorizontalAlignment, VerticalAlignment]
 dll.pixie_image_fill_text.restype = None
 
-dll.pixie_image_arrangement_fill_text.argtypes = [Image, Arrangement, POINTER(Matrix3)]
+dll.pixie_image_arrangement_fill_text.argtypes = [Image, Arrangement, Matrix3]
 dll.pixie_image_arrangement_fill_text.restype = None
 
-dll.pixie_image_stroke_text.argtypes = [Image, Font, c_char_p, POINTER(Matrix3), c_float, Vector2, HorizontalAlignment, VerticalAlignment, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_image_stroke_text.argtypes = [Image, Font, c_char_p, Matrix3, c_float, Vector2, HorizontalAlignment, VerticalAlignment, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_image_stroke_text.restype = None
 
-dll.pixie_image_arrangement_stroke_text.argtypes = [Image, Arrangement, POINTER(Matrix3), c_float, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_image_arrangement_stroke_text.argtypes = [Image, Arrangement, Matrix3, c_float, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_image_arrangement_stroke_text.restype = None
 
-dll.pixie_image_fill_path.argtypes = [Image, Path, Paint, POINTER(Matrix3), WindingRule]
+dll.pixie_image_fill_path.argtypes = [Image, Path, Paint, Matrix3, WindingRule]
 dll.pixie_image_fill_path.restype = None
 
-dll.pixie_image_stroke_path.argtypes = [Image, Path, Paint, POINTER(Matrix3), c_float, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_image_stroke_path.argtypes = [Image, Path, Paint, Matrix3, c_float, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_image_stroke_path.restype = None
 
 dll.pixie_image_new_context.argtypes = [Image]
@@ -2047,28 +2047,28 @@ dll.pixie_mask_invert.restype = None
 dll.pixie_mask_blur.argtypes = [Mask, c_float, c_ubyte]
 dll.pixie_mask_blur.restype = None
 
-dll.pixie_mask_draw.argtypes = [Mask, Mask, POINTER(Matrix3), BlendMode]
+dll.pixie_mask_draw.argtypes = [Mask, Mask, Matrix3, BlendMode]
 dll.pixie_mask_draw.restype = None
 
-dll.pixie_mask_image_draw.argtypes = [Mask, Image, POINTER(Matrix3), BlendMode]
+dll.pixie_mask_image_draw.argtypes = [Mask, Image, Matrix3, BlendMode]
 dll.pixie_mask_image_draw.restype = None
 
-dll.pixie_mask_fill_text.argtypes = [Mask, Font, c_char_p, POINTER(Matrix3), Vector2, HorizontalAlignment, VerticalAlignment]
+dll.pixie_mask_fill_text.argtypes = [Mask, Font, c_char_p, Matrix3, Vector2, HorizontalAlignment, VerticalAlignment]
 dll.pixie_mask_fill_text.restype = None
 
-dll.pixie_mask_arrangement_fill_text.argtypes = [Mask, Arrangement, POINTER(Matrix3)]
+dll.pixie_mask_arrangement_fill_text.argtypes = [Mask, Arrangement, Matrix3]
 dll.pixie_mask_arrangement_fill_text.restype = None
 
-dll.pixie_mask_stroke_text.argtypes = [Mask, Font, c_char_p, POINTER(Matrix3), c_float, Vector2, HorizontalAlignment, VerticalAlignment, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_mask_stroke_text.argtypes = [Mask, Font, c_char_p, Matrix3, c_float, Vector2, HorizontalAlignment, VerticalAlignment, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_mask_stroke_text.restype = None
 
-dll.pixie_mask_arrangement_stroke_text.argtypes = [Mask, Arrangement, POINTER(Matrix3), c_float, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_mask_arrangement_stroke_text.argtypes = [Mask, Arrangement, Matrix3, c_float, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_mask_arrangement_stroke_text.restype = None
 
-dll.pixie_mask_fill_path.argtypes = [Mask, Path, POINTER(Matrix3), WindingRule, BlendMode]
+dll.pixie_mask_fill_path.argtypes = [Mask, Path, Matrix3, WindingRule, BlendMode]
 dll.pixie_mask_fill_path.restype = None
 
-dll.pixie_mask_stroke_path.argtypes = [Mask, Path, POINTER(Matrix3), c_float, LineCap, LineJoin, c_float, SeqFloat32, BlendMode]
+dll.pixie_mask_stroke_path.argtypes = [Mask, Path, Matrix3, c_float, LineCap, LineJoin, c_float, SeqFloat32, BlendMode]
 dll.pixie_mask_stroke_path.restype = None
 
 dll.pixie_paint_unref.argtypes = [Paint]
@@ -2110,7 +2110,7 @@ dll.pixie_paint_set_image.restype = None
 dll.pixie_paint_get_image_mat.argtypes = [Paint]
 dll.pixie_paint_get_image_mat.restype = Matrix3
 
-dll.pixie_paint_set_image_mat.argtypes = [Paint, POINTER(Matrix3)]
+dll.pixie_paint_set_image_mat.argtypes = [Paint, Matrix3]
 dll.pixie_paint_set_image_mat.restype = None
 
 dll.pixie_paint_gradient_handle_positions_len.argtypes = [Paint]
@@ -2158,7 +2158,7 @@ dll.pixie_path_unref.restype = None
 dll.pixie_new_path.argtypes = []
 dll.pixie_new_path.restype = c_ulonglong
 
-dll.pixie_path_transform.argtypes = [Path, POINTER(Matrix3)]
+dll.pixie_path_transform.argtypes = [Path, Matrix3]
 dll.pixie_path_transform.restype = None
 
 dll.pixie_path_add_path.argtypes = [Path, Path]
@@ -2167,13 +2167,13 @@ dll.pixie_path_add_path.restype = None
 dll.pixie_path_close_path.argtypes = [Path]
 dll.pixie_path_close_path.restype = None
 
-dll.pixie_path_compute_bounds.argtypes = [Path, POINTER(Matrix3)]
+dll.pixie_path_compute_bounds.argtypes = [Path, Matrix3]
 dll.pixie_path_compute_bounds.restype = Rect
 
-dll.pixie_path_fill_overlaps.argtypes = [Path, Vector2, POINTER(Matrix3), WindingRule]
+dll.pixie_path_fill_overlaps.argtypes = [Path, Vector2, Matrix3, WindingRule]
 dll.pixie_path_fill_overlaps.restype = c_bool
 
-dll.pixie_path_stroke_overlaps.argtypes = [Path, Vector2, POINTER(Matrix3), c_float, LineCap, LineJoin, c_float, SeqFloat32]
+dll.pixie_path_stroke_overlaps.argtypes = [Path, Vector2, Matrix3, c_float, LineCap, LineJoin, c_float, SeqFloat32]
 dll.pixie_path_stroke_overlaps.restype = c_bool
 
 dll.pixie_path_move_to.argtypes = [Path, c_float, c_float]
@@ -2455,10 +2455,10 @@ dll.pixie_context_measure_text.restype = TextMetrics
 dll.pixie_context_get_transform.argtypes = [Context]
 dll.pixie_context_get_transform.restype = Matrix3
 
-dll.pixie_context_set_transform.argtypes = [Context, POINTER(Matrix3)]
+dll.pixie_context_set_transform.argtypes = [Context, Matrix3]
 dll.pixie_context_set_transform.restype = None
 
-dll.pixie_context_transform.argtypes = [Context, POINTER(Matrix3)]
+dll.pixie_context_transform.argtypes = [Context, Matrix3]
 dll.pixie_context_transform.restype = None
 
 dll.pixie_context_reset_transform.argtypes = [Context]
