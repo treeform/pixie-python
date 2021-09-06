@@ -2,16 +2,14 @@ from ctypes import *
 import os, sys
 from pathlib import Path
 
-src_path = Path(__file__).resolve()
-src_dir = str(src_path.parent)
-
+dir = os.path.dirname(sys.modules["pixie"].__file__)
 if sys.platform == "win32":
   libName = "pixie.dll"
 elif sys.platform == "darwin":
   libName = "libpixie.dylib"
 else:
   libName = "libpixie.so"
-dll = cdll.LoadLibrary(src_dir + "/" + libName)
+dll = cdll.LoadLibrary(os.path.join(dir, libName))
 
 class PixieError(Exception):
     pass
