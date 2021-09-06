@@ -320,13 +320,6 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def wh(self):
-        """
-        Return with and height as a size vector.
-        """
-        result = dll.pixie_image_wh(self)
-        return result
-
     def copy(self):
         """
         Copies the image data into a new image.
@@ -608,13 +601,6 @@ class Mask(Structure):
         dll.pixie_mask_write_file(self, file_path.encode("utf8"))
         if check_error():
             raise PixieError(take_error())
-
-    def wh(self):
-        """
-        Return with and height as a size vector.
-        """
-        result = dll.pixie_mask_wh(self)
-        return result
 
     def copy(self):
         """
@@ -1909,9 +1895,6 @@ dll.pixie_image_set_height.restype = None
 dll.pixie_image_write_file.argtypes = [Image, c_char_p]
 dll.pixie_image_write_file.restype = None
 
-dll.pixie_image_wh.argtypes = [Image]
-dll.pixie_image_wh.restype = Vector2
-
 dll.pixie_image_copy.argtypes = [Image]
 dll.pixie_image_copy.restype = Image
 
@@ -2010,9 +1993,6 @@ dll.pixie_mask_set_height.restype = None
 
 dll.pixie_mask_write_file.argtypes = [Mask, c_char_p]
 dll.pixie_mask_write_file.restype = None
-
-dll.pixie_mask_wh.argtypes = [Mask]
-dll.pixie_mask_wh.restype = Vector2
 
 dll.pixie_mask_copy.argtypes = [Mask]
 dll.pixie_mask_copy.restype = Mask

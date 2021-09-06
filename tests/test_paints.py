@@ -12,7 +12,8 @@ def test_basic_fields():
     paint.color = pixie.Color(1, 0, 0, 1)
     assert paint.color == pixie.Color(1, 0, 0, 1)
     paint.image = pixie.Image(100, 100)
-    assert paint.image.wh() == pixie.Vector2(100, 100)
+    assert paint.image.width == 100
+    assert paint.image.height == 100
     paint.image_mat = pixie.Matrix3()
     assert paint.image_mat == pixie.Matrix3()
 

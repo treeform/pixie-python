@@ -10,7 +10,7 @@ setuptools.setup(
     package_dir = {"": "src"},
     packages = setuptools.find_packages(where="src"),
     include_package_data = True,
-    package_data = {"pixie": ["pixie.dll", "libpixie.so"]},
+    package_data = {"pixie": ["pixie.dll", "libpixie.so", "libpixie.dylib"]},
     python_requires = ">=3.6.0",
     classifiers = [
         "Programming Language :: Python :: 3",

@@ -11,7 +11,6 @@ def test_basic():
     image = pixie.Image(100, 100)
     assert image.width == 100
     assert image.height == 100
-    assert image.wh() == pixie.Vector2(100, 100)
     image.set_color(50, 25, pixie.Color(1, 1, 0, 1))
     assert image.get_color(50, 25) == pixie.Color(1, 1, 0, 1)
     image.fill(pixie.Color(1, 0, 0, 1))
@@ -78,7 +77,8 @@ def test_new_mask():
     image.fill(pixie.Color(1, 1, 1, 1))
 
     mask = image.new_mask()
-    assert mask.wh() == pixie.Vector2(100, 100)
+    assert mask.width == 100
+    assert mask.height == 100
     assert mask.get_value(5, 50) == 255
 
 def test_apply_opacity():
