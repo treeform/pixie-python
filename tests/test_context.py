@@ -44,25 +44,25 @@ def test_transform():
     context = pixie.Context(100, 100)
     context.get_transform() == pixie.Matrix3()
     mat3 = pixie.Matrix3()
-    mat3.b = 1
+    mat3.values[1] = 1
     context.set_transform(mat3)
-    context.get_transform().b == 1
-    mat3.a = 0
-    mat3.b = 0
-    mat3.e = 0
-    mat3.i = 0
+    context.get_transform().values[1] == 1
+    mat3.values[0] = 0
+    mat3.values[1] = 0
+    mat3.values[4] = 0
+    mat3.values[8] = 0
     context.transform(mat3) # All 0 matrix
     assert context.get_transform() == mat3
     context.reset_transform()
     context.get_transform() == pixie.Matrix3()
     context.translate(10, 20)
-    assert context.get_transform().g == 10
-    assert context.get_transform().h == 20
+    assert context.get_transform().values[6] == 10
+    assert context.get_transform().values[7] == 20
     context.scale(2, 2)
-    assert context.get_transform().a == 2
+    assert context.get_transform().values[0] == 2
     context.reset_transform()
     context.rotate(180)
-    assert context.get_transform().a != 1
+    assert context.get_transform().values[0] != 1
 
 def test_fill():
     context = pixie.Context(100, 100)
