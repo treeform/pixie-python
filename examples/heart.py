@@ -1,5 +1,8 @@
 import pixie
 
+image = pixie.Image(200, 200)
+image.fill(pixie.Color(1, 1, 1, 1))
+
 path = pixie.parse_path(
     """
     M 20 60
@@ -14,8 +17,6 @@ path = pixie.parse_path(
 paint = pixie.Paint(pixie.PK_SOLID)
 paint.color = pixie.parse_color("#FC427B")
 
-image = pixie.Image(200, 200)
-image.fill(pixie.Color(1, 1, 1, 1))
 image.fill_path(path, paint)
 
 image.write_file("examples/heart.png")

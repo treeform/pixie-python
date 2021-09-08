@@ -1835,6 +1835,10 @@ def scale(x, y):
     result = dll.pixie_scale(x, y)
     return result
 
+def inverse(m):
+    result = dll.pixie_inverse(m)
+    return result
+
 dll.pixie_check_error.argtypes = []
 dll.pixie_check_error.restype = c_bool
 
@@ -2587,4 +2591,7 @@ dll.pixie_rotate.restype = Matrix3
 
 dll.pixie_scale.argtypes = [c_float, c_float]
 dll.pixie_scale.restype = Matrix3
+
+dll.pixie_inverse.argtypes = [Matrix3]
+dll.pixie_inverse.restype = Matrix3
 

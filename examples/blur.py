@@ -1,5 +1,8 @@
 import pixie
 
+image = pixie.Image(200, 200)
+image.fill(pixie.Color(1, 1, 1, 1))
+
 trees = pixie.read_image("examples/data/trees.png")
 
 path = pixie.Path()
@@ -11,9 +14,6 @@ mask.fill_path(path)
 blur = trees.copy()
 blur.blur(20)
 blur.mask_draw(mask)
-
-image = pixie.Image(200, 200)
-image.fill(pixie.Color(1, 1, 1, 1))
 
 image.draw(trees)
 image.draw(blur)
