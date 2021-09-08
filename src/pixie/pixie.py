@@ -1,6 +1,5 @@
 from ctypes import *
 import os, sys
-from pathlib import Path
 
 dir = os.path.dirname(sys.modules["pixie"].__file__)
 if sys.platform == "win32":
@@ -107,31 +106,19 @@ class Vector2(Structure):
 
 class Matrix3(Structure):
     _fields_ = [
-        ("a", c_float),
-        ("b", c_float),
-        ("c", c_float),
-        ("d", c_float),
-        ("e", c_float),
-        ("f", c_float),
-        ("g", c_float),
-        ("h", c_float),
-        ("i", c_float)
+        ("values", c_float * 9)
     ]
 
     def __init__(self):
         tmp = dll.pixie_matrix_3()
-        self.a = tmp.a
-        self.b = tmp.b
-        self.c = tmp.c
-        self.d = tmp.d
-        self.e = tmp.e
-        self.f = tmp.f
-        self.g = tmp.g
-        self.h = tmp.h
-        self.i = tmp.i
+        self.values = tmp.values
 
     def __eq__(self, obj):
-        return self.a == obj.a and self.b == obj.b and self.c == obj.c and self.d == obj.d and self.e == obj.e and self.f == obj.f and self.g == obj.g and self.h == obj.h and self.i == obj.i
+        return self.values[0] == obj.values[0] and self.values[1] == obj.values[1] and self.values[2] == obj.values[2] and self.values[3] == obj.values[3] and self.values[4] == obj.values[4] and self.values[5] == obj.values[5] and self.values[6] == obj.values[6] and self.values[7] == obj.values[7] and self.values[8] == obj.values[8]
+
+    def __mul__(self, b):
+        result = dll.pixie_matrix_3_mul(self, b)
+        return result
 
 class Rect(Structure):
     _fields_ = [
@@ -1114,6 +1101,13 @@ class Typeface(Structure):
         result = dll.pixie_typeface_line_height(self)
         return result
 
+    def has_glyph(self, rune):
+        """
+        Returns if there is a glyph for this rune.
+        """
+        result = dll.pixie_typeface_has_glyph(self, rune)
+        return result
+
     def get_glyph_path(self, rune):
         """
         The glyph path for the rune.
@@ -1559,8 +1553,11 @@ class Context(Structure):
         """
         dll.pixie_context_reset_transform(self)
 
-    def draw_image_1(self, image, dx, dy):
-        dll.pixie_context_draw_image_1(self, image, dx, dy)
+    def draw_image(self, image, dx, dy):
+        """
+        Draws a source image onto the destination image.
+        """
+        dll.pixie_context_draw_image(self, image, dx, dy)
         if check_error():
             raise PixieError(take_error())
 
@@ -1674,6 +1671,15 @@ class Context(Structure):
         strokeStyle and other context settings.
         """
         dll.pixie_context_stroke_rect(self, x, y, width, height)
+        if check_error():
+            raise PixieError(take_error())
+
+    def stroke_segment(self, ax, ay, bx, by):
+        """
+        Strokes a segment (draws a line from ax, ay to bx, by) according
+        to the current strokeStyle and other context settings.
+        """
+        dll.pixie_context_stroke_segment(self, ax, ay, bx, by)
         if check_error():
             raise PixieError(take_error())
 
@@ -1811,6 +1817,24 @@ def angle_to_miter_limit(angle):
     result = dll.pixie_angle_to_miter_limit(angle)
     return result
 
+def parse_color(s):
+    result = dll.pixie_parse_color(s.encode("utf8"))
+    if check_error():
+        raise PixieError(take_error())
+    return result
+
+def translate(x, y):
+    result = dll.pixie_translate(x, y)
+    return result
+
+def rotate(angle):
+    result = dll.pixie_rotate(angle)
+    return result
+
+def scale(x, y):
+    result = dll.pixie_scale(x, y)
+    return result
+
 dll.pixie_check_error.argtypes = []
 dll.pixie_check_error.restype = c_bool
 
@@ -1819,6 +1843,9 @@ dll.pixie_take_error.restype = c_char_p
 
 dll.pixie_matrix_3.argtypes = []
 dll.pixie_matrix_3.restype = Matrix3
+
+dll.pixie_matrix_3_mul.argtypes = [Matrix3, Matrix3]
+dll.pixie_matrix_3_mul.restype = Matrix3
 
 dll.pixie_seq_float_32_unref.argtypes = [SeqFloat32]
 dll.pixie_seq_float_32_unref.restype = None
@@ -2213,6 +2240,9 @@ dll.pixie_typeface_line_gap.restype = c_float
 dll.pixie_typeface_line_height.argtypes = [Typeface]
 dll.pixie_typeface_line_height.restype = c_float
 
+dll.pixie_typeface_has_glyph.argtypes = [Typeface, c_int]
+dll.pixie_typeface_has_glyph.restype = c_bool
+
 dll.pixie_typeface_get_glyph_path.argtypes = [Typeface, c_int]
 dll.pixie_typeface_get_glyph_path.restype = Path
 
@@ -2444,8 +2474,8 @@ dll.pixie_context_transform.restype = None
 dll.pixie_context_reset_transform.argtypes = [Context]
 dll.pixie_context_reset_transform.restype = None
 
-dll.pixie_context_draw_image_1.argtypes = [Context, Image, c_float, c_float]
-dll.pixie_context_draw_image_1.restype = None
+dll.pixie_context_draw_image.argtypes = [Context, Image, c_float, c_float]
+dll.pixie_context_draw_image.restype = None
 
 dll.pixie_context_draw_image_2.argtypes = [Context, Image, c_float, c_float, c_float, c_float]
 dll.pixie_context_draw_image_2.restype = None
@@ -2495,6 +2525,9 @@ dll.pixie_context_fill_rect.restype = None
 dll.pixie_context_stroke_rect.argtypes = [Context, c_float, c_float, c_float, c_float]
 dll.pixie_context_stroke_rect.restype = None
 
+dll.pixie_context_stroke_segment.argtypes = [Context, c_float, c_float, c_float, c_float]
+dll.pixie_context_stroke_segment.restype = None
+
 dll.pixie_context_fill_text.argtypes = [Context, c_char_p, c_float, c_float]
 dll.pixie_context_fill_text.restype = None
 
@@ -2542,4 +2575,16 @@ dll.pixie_miter_limit_to_angle.restype = c_float
 
 dll.pixie_angle_to_miter_limit.argtypes = [c_float]
 dll.pixie_angle_to_miter_limit.restype = c_float
+
+dll.pixie_parse_color.argtypes = [c_char_p]
+dll.pixie_parse_color.restype = Color
+
+dll.pixie_translate.argtypes = [c_float, c_float]
+dll.pixie_translate.restype = Matrix3
+
+dll.pixie_rotate.argtypes = [c_float]
+dll.pixie_rotate.restype = Matrix3
+
+dll.pixie_scale.argtypes = [c_float, c_float]
+dll.pixie_scale.restype = Matrix3
 
