@@ -1,5 +1,8 @@
 import pixie
 
+image = pixie.Image(200, 200)
+image.fill(pixie.Color(1, 1, 1, 1))
+
 lines = pixie.Image(200, 200)
 lines.fill(pixie.parse_color("#FC427B"))
 
@@ -26,9 +29,6 @@ path = pixie.parse_path(
 
 mask = pixie.Mask(200, 200)
 mask.fill_path(path)
-
-image = pixie.Image(200, 200)
-image.fill(pixie.Color(1, 1, 1, 1))
 
 lines.mask_draw(mask)
 image.draw(lines)

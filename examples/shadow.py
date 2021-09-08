@@ -1,14 +1,16 @@
 import pixie
 
-polygon_image = pixie.Image(200, 200)
+image = pixie.Image(200, 200)
+image.fill(pixie.Color(1, 1, 1, 1))
+
+path = pixie.Path()
+path.polygon(100, 100, 70, sides = 8)
 
 paint = pixie.Paint(pixie.PK_SOLID)
 paint.color = pixie.Color(1, 1, 1, 1)
 
-ctx = polygon_image.new_context()
-ctx.fill_style = paint
-ctx.polygon(100, 100, 70, 8)
-ctx.fill()
+polygon_image = pixie.Image(200, 200)
+polygon_image.fill_path(path, paint)
 
 shadow = polygon_image.shadow(
     offset = pixie.Vector2(2, 2),
@@ -16,9 +18,6 @@ shadow = polygon_image.shadow(
     blur = 10,
     color = pixie.Color(0, 0, 0, 0.78125)
 )
-
-image = pixie.Image(200, 200)
-image.fill(pixie.Color(1, 1, 1, 1))
 
 image.draw(shadow)
 image.draw(polygon_image)

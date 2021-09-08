@@ -1,5 +1,8 @@
 import pixie
 
+image = pixie.Image(200, 200)
+image.fill(pixie.Color(1, 1, 1, 1))
+
 paint = pixie.Paint(pixie.PK_GRADIENT_RADIAL)
 
 paint.gradient_handle_positions.append(pixie.Vector2(100, 100))
@@ -19,10 +22,6 @@ path = pixie.parse_path(
     z
     """
 )
-
-
-image = pixie.Image(200, 200)
-image.fill(pixie.Color(1, 1, 1, 1))
 
 image.fill_path(path, paint)
 
