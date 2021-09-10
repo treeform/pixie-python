@@ -4,6 +4,8 @@
 
 ![Github Actions](https://github.com/treeform/pixie-python/workflows/Github%20Actions/badge.svg)
 
+`pip install pixie-python`
+
 Features:
 * Typesetting and rasterizing text, including styled rich text via spans.
 * Drawing paths, shapes and curves with even-odd and non-zero windings.
