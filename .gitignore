@@ -9,4 +9,5 @@ nimcache
 *.pdb
 *.ilk
 .*
+dist
 __pycache__
