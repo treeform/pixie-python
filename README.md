@@ -93,8 +93,10 @@ z             | ✅            | close path            |
 
 ## Examples
 
+`git clone https://github.com/treeform/pixie-python` to run examples.
+
 ### Text
-[examples/text.py](examples/text.py)
+python [examples/text.py](examples/text.py)
 ```py
 font = pixie.read_font("examples/data/Roboto-Regular_1.ttf")
 font.size = 20
@@ -111,7 +113,7 @@ image.fill_text(
 ![example output](examples/text.png)
 
 ### Text spans
-[examples/text_spans.py](examples/text_spans.py)
+python [examples/text_spans.py](examples/text_spans.py)
 ```py
 typeface = pixie.read_typeface("examples/data/Ubuntu-Regular_1.ttf")
 
@@ -147,7 +149,7 @@ image.arrangement_fill_text(
 ![example output](examples/text_spans.png)
 
 ### Square
-[examples/square.py](examples/square.py)
+python [examples/square.py](examples/square.py)
 ```py
 paint = pixie.Paint(pixie.PK_SOLID)
 paint.color = pixie.Color(1, 0, 0, 1)
@@ -160,7 +162,7 @@ ctx.fill_rect(50, 50, 100, 100)
 ![example output](examples/square.png)
 
 ### Line
-[examples/line.py](examples/line.py)
+python [examples/line.py](examples/line.py)
 ```py
 paint = pixie.Paint(pixie.PK_SOLID)
 paint.color = pixie.parse_color("#FF5C00")
@@ -174,7 +176,7 @@ ctx.stroke_segment(25, 25, 175, 175)
 ![example output](examples/line.png)
 
 ### Rounded rectangle
-[examples/rounded_rectangle.py](examples/rounded_rectangle.py)
+python [examples/rounded_rectangle.py](examples/rounded_rectangle.py)
 ```py
 paint = pixie.Paint(pixie.PK_SOLID)
 paint.color = pixie.Color(0, 1, 0, 1)
@@ -187,7 +189,7 @@ ctx.fill()
 ![example output](examples/rounded_rectangle.png)
 
 ### Heart
-[examples/heart.py](examples/heart.py)
+python [examples/heart.py](examples/heart.py)
 ```py
 path = pixie.parse_path(
     """
@@ -208,7 +210,7 @@ image.fill_path(path, paint)
 ![example output](examples/heart.png)
 
 ### Masking
-[examples/masking.py](examples/masking.py)
+python [examples/masking.py](examples/masking.py)
 ```py
 lines = pixie.Image(200, 200)
 lines.fill(pixie.parse_color("#FC427B"))
@@ -243,7 +245,7 @@ image.draw(lines)
 ![example output](examples/masking.png)
 
 ### Gradient
-[examples/gradient.py](examples/gradient.py)
+python [examples/gradient.py](examples/gradient.py)
 ```py
 paint = pixie.Paint(pixie.PK_GRADIENT_RADIAL)
 
@@ -270,7 +272,7 @@ image.fill_path(path, paint)
 ![example output](examples/gradient.png)
 
 ### Image tiled
-[examples/image_tiled.py](examples/image_tiled.py)
+python [examples/image_tiled.py](examples/image_tiled.py)
 ```py
 path = pixie.Path()
 path.polygon(100, 100, 70, 8)
@@ -284,7 +286,7 @@ image.fill_path(path, paint)
 ![example output](examples/image_tiled.png)
 
 ### Shadow
-[examples/shadow.py](examples/shadow.py)
+python [examples/shadow.py](examples/shadow.py)
 ```py
 path = pixie.Path()
 path.polygon(100, 100, 70, sides = 8)
@@ -308,7 +310,7 @@ image.draw(polygon_image)
 ![example output](examples/shadow.png)
 
 ### Blur
-[examples/blur.py](examples/blur.py)
+python [examples/blur.py](examples/blur.py)
 ```py
 trees = pixie.read_image("examples/data/trees.png")
 
@@ -328,7 +330,7 @@ image.draw(blur)
 ![example output](examples/blur.png)
 
 ### Tiger
-[examples/tiger.py](examples/tiger.py)
+python [examples/tiger.py](examples/tiger.py)
 ```py
 tiger = pixie.read_image("examples/data/tiger.svg")
 

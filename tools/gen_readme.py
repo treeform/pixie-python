@@ -27,7 +27,7 @@ for path in exampleFiles:
     name = os.path.splitext(os.path.basename(path))[0]
     name = name.replace("_", " ").capitalize()
     md.append("### " + name)
-    md.append("[" + path + "](" + path + ")")
+    md.append("python [" + path + "](" + path + ")")
     code = open(path, "r").read()
     code = cut_between(code, "image.fill(pixie.Color(1, 1, 1, 1))", "image.write_file").strip()
     code = "```py\n" + code + "\n```"
@@ -41,6 +41,7 @@ at = readme.find("## Examples")
 
 readme = readme[0:at]
 readme = readme + "## Examples\n\n"
+readme = readme + "`git clone https://github.com/treeform/pixie-python` to run examples.\n\n"
 readme = readme + "\n".join(md)
 
 open("README.md", "w", newline="\n").write(readme)
