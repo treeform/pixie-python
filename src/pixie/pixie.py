@@ -626,6 +626,15 @@ class Mask(Structure):
             raise PixieError(take_error())
         return result
 
+    def magnify_by_2(self, power = 1):
+        """
+        Scales mask up by 2 ^ power.
+        """
+        result = dll.pixie_mask_magnify_by_2(self, power)
+        if check_error():
+            raise PixieError(take_error())
+        return result
+
     def spread(self, spread):
         """
         Grows the mask by spread.
@@ -2039,6 +2048,9 @@ dll.pixie_mask_fill.restype = None
 
 dll.pixie_mask_minify_by_2.argtypes = [Mask, c_longlong]
 dll.pixie_mask_minify_by_2.restype = Mask
+
+dll.pixie_mask_magnify_by_2.argtypes = [Mask, c_longlong]
+dll.pixie_mask_magnify_by_2.restype = Mask
 
 dll.pixie_mask_spread.argtypes = [Mask, c_float]
 dll.pixie_mask_spread.restype = None
