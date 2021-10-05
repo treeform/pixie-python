@@ -1,0 +1,3 @@
+include src\pixie\pixie.dll
+include src\pixie\libpixie.so
+include src\pixie\libpixie.dylib
