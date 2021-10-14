@@ -120,7 +120,7 @@ typeface = pixie.read_typeface("examples/data/Ubuntu-Regular_1.ttf")
 def make_font(typeface, size, color):
     font = typeface.new_font()
     font.size = size
-    font.paints[0].color = color
+    font.paint.color = color
     return font
 
 spans = pixie.SeqSpan()
