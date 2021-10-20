@@ -15,6 +15,10 @@ def test_fields():
     assert font.strikethrough
     font.no_kerning_adjustment = True
     assert font.no_kerning_adjustment
+    paint = pixie.Paint(pixie.PK_SOLID)
+    paint.color = pixie.Color(1, 1, 0, 1)
+    font.paint = paint
+    assert font.paint.color == paint.color
 
 def test_paints():
     font = pixie.read_font("tests/fonts/Roboto-Regular_1.ttf")

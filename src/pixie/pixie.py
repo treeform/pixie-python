@@ -1208,6 +1208,14 @@ class Font(Structure):
         return self.FontPaints(self)
 
     @property
+    def paint(self):
+        return dll.pixie_font_get_paint(self)
+
+    @paint.setter
+    def paint(self, paint):
+        dll.pixie_font_set_paint(self, paint)
+
+    @property
     def text_case(self):
         return dll.pixie_font_get_text_case(self)
 
@@ -2309,6 +2317,12 @@ dll.pixie_font_paints_add.restype = None
 
 dll.pixie_font_paints_clear.argtypes = [Font]
 dll.pixie_font_paints_clear.restype = None
+
+dll.pixie_font_get_paint.argtypes = [Font]
+dll.pixie_font_get_paint.restype = Paint
+
+dll.pixie_font_set_paint.argtypes = [Font, Paint]
+dll.pixie_font_set_paint.restype = None
 
 dll.pixie_font_get_text_case.argtypes = [Font]
 dll.pixie_font_get_text_case.restype = TextCase
