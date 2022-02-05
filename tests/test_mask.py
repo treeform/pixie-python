@@ -23,7 +23,7 @@ def test_basic():
 def test_minify_by_2():
     mask = pixie.Mask(400, 400)
     mask.fill(255)
-    mask = mask.minify_by_2(2)
+    mask = mask.minify_by2(2)
     mask.write_file("tests/masks/minified.png")
 
 def test_paths():

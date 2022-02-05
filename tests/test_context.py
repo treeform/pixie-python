@@ -127,3 +127,17 @@ def test_text():
 
     context.fill_text("test", 0, 0)
     context.stroke_text("text", 0, 0)
+
+def test_line_dash():
+    context = pixie.Context(100, 100)
+    line_dash = pixie.SeqFloat32()
+    line_dash.append(1)
+    line_dash.append(0)
+    line_dash.append(2)
+    line_dash.append(3)
+    context.set_line_dash(line_dash)
+    retrieved_line_dash = context.get_line_dash()
+    assert len(line_dash) == len(retrieved_line_dash)
+    for i in range(0, len(line_dash)):
+        print(line_dash[i])
+        assert line_dash[i] == retrieved_line_dash[i]
