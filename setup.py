@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name = "pixie-python",
-    version = "3.0.2",
+    version = "3.1.4",
     author = "Andre von Houck",
     author_email = "starplant@gmail.com",
     description = "Python bindings for Pixie, a full-featured 2D graphics library",

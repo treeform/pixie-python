@@ -45,16 +45,16 @@ def test_subsuper():
     image.sub_image(0, 0, 20, 20).write_file("tests/images/sub_image.png")
     image.super_image(-10, -10, 120, 120).write_file("tests/images/super_image.png")
 
-def test_minify_by_2():
+def test_minify_by2():
     image = pixie.Image(400, 400)
     image.fill(pixie.Color(0, 0, 1, 1))
-    image = image.minify_by_2(2)
+    image = image.minify_by2(2)
     image.write_file("tests/images/minified.png")
 
-def test_magnify_by_2():
+def test_magnify_by2():
     image = pixie.Image(25, 25)
     image.fill(pixie.Color(0, 1, 0, 1))
-    image = image.magnify_by_2(2)
+    image = image.magnify_by2(2)
     image.write_file("tests/images/magnified.png")
 
 def test_paths():
