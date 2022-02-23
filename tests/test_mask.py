@@ -109,7 +109,7 @@ def test_draw_image():
     image = pixie.Image(100, 100)
     image_path = pixie.Path()
     image_path.rect(0, 0, 100, 30)
-    image_paint = pixie.Paint(pixie.PK_SOLID)
+    image_paint = pixie.Paint(pixie.SOLID_PAINT)
     image_paint.color = pixie.Color(1, 1, 1, 1)
     image.fill_path(image_path, image_paint)
 

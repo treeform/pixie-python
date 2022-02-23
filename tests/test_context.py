@@ -3,11 +3,11 @@ import pixie
 def test_fields():
     context = pixie.Context(100, 100)
     assert context.image is not None
-    fill = pixie.Paint(pixie.PK_SOLID)
+    fill = pixie.Paint(pixie.SOLID_PAINT)
     fill.color = pixie.Color(1, 0, 0, 1)
     context.fill_style = fill
     assert context.fill_style == fill
-    stroke = pixie.Paint(pixie.PK_SOLID)
+    stroke = pixie.Paint(pixie.SOLID_PAINT)
     stroke.color = pixie.Color(0, 1, 1, 1)
     context.stroke = stroke
     assert context.stroke == stroke
@@ -17,24 +17,24 @@ def test_fields():
     assert context.line_width == 2
     context.miter_limit = 2
     assert context.miter_limit == 2
-    context.line_cap = pixie.LC_ROUND
-    assert context.line_cap == pixie.LC_ROUND
-    context.line_join = pixie.LJ_BEVEL
-    assert context.line_join == pixie.LJ_BEVEL
+    context.line_cap = pixie.ROUND_CAP
+    assert context.line_cap == pixie.ROUND_CAP
+    context.line_join = pixie.BEVEL_JOIN
+    assert context.line_join == pixie.BEVEL_JOIN
     context.font = "tests/fonts/Roboto-Regular_1.ttf"
     assert context.font == "tests/fonts/Roboto-Regular_1.ttf"
     context.font_size = 18
     assert context.font_size == 18
-    context.text_align = pixie.HA_CENTER
-    assert context.text_align == pixie.HA_CENTER
+    context.text_align = pixie.CENTER_ALIGN
+    assert context.text_align == pixie.CENTER_ALIGN
 
 def test_save_restore():
     context = pixie.Context(100, 100)
-    paint1 = pixie.Paint(pixie.PK_SOLID)
+    paint1 = pixie.Paint(pixie.SOLID_PAINT)
     paint1.color = pixie.Color(1, 0, 0, 1)
     context.fill_style = paint1
     context.save()
-    paint2 = pixie.Paint(pixie.PK_SOLID)
+    paint2 = pixie.Paint(pixie.SOLID_PAINT)
     paint2.color = pixie.Color(1, 1, 0, 1)
     context.fill_style = paint2
     context.restore()
@@ -66,7 +66,7 @@ def test_transform():
 
 def test_fill():
     context = pixie.Context(100, 100)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 0, 0, 1)
     context.fill_style = paint
     context.begin_path()
@@ -76,7 +76,7 @@ def test_fill():
 
 def test_stroke():
     context = pixie.Context(100, 100)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 0, 0, 1)
     context.stroke_style = paint
     context.line_width = 10
@@ -88,7 +88,7 @@ def test_stroke():
 
 def test_clip():
     context = pixie.Context(100, 100)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 0, 0, 1)
     context.fill_style = paint
     context.begin_path()
