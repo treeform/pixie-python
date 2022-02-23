@@ -1,12 +1,12 @@
 import pixie
 
 def test_basic_fields():
-    paint = pixie.Paint(pixie.PK_SOLID)
-    assert paint.kind == pixie.PK_SOLID
-    paint.kind = pixie.PK_IMAGE
-    assert paint.kind == pixie.PK_IMAGE
-    paint.blend_mode = pixie.BM_MULTIPLY
-    assert paint.blend_mode == pixie.BM_MULTIPLY
+    paint = pixie.Paint(pixie.SOLID_PAINT)
+    assert paint.kind == pixie.SOLID_PAINT
+    paint.kind = pixie.IMAGE_PAINT
+    assert paint.kind == pixie.IMAGE_PAINT
+    paint.blend_mode = pixie.MULTIPLY_BLEND
+    assert paint.blend_mode == pixie.MULTIPLY_BLEND
     paint.opacity = 0.5
     assert paint.opacity == 0.5
     paint.color = pixie.Color(1, 0, 0, 1)
@@ -21,7 +21,7 @@ def test_basic_fields():
     assert paint2 != paint
 
 def test_seq_fields():
-    paint = pixie.Paint(pixie.PK_GRADIENT_LINEAR)
+    paint = pixie.Paint(pixie.LINEAR_GRADIENT_PAINT)
 
     paint.gradient_handle_positions.append(pixie.Vector2(100, 100))
     paint.gradient_handle_positions.append(pixie.Vector2(200, 200))

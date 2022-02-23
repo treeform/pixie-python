@@ -13,77 +13,91 @@ dll = cdll.LoadLibrary(os.path.join(dir, libName))
 class PixieError(Exception):
     pass
 
+class SeqIterator(object):
+    def __init__(self, seq):
+        self.idx = 0
+        self.seq = seq
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.idx < len(self.seq):
+            self.idx += 1
+            return self.seq[self.idx - 1]
+        else:
+            self.idx = 0
+            raise StopIteration
+
 DEFAULT_MITER_LIMIT = 4.0
 
 AUTO_LINE_HEIGHT = -1.0
 
 FileFormat = c_byte
-FF_PNG = 0
-FF_BMP = 1
-FF_JPG = 2
-FF_GIF = 3
-FF_QOI = 4
-FF_PPM = 5
+PNG_FORMAT = 0
+BMP_FORMAT = 1
+JPG_FORMAT = 2
+GIF_FORMAT = 3
+QOI_FORMAT = 4
+PPM_FORMAT = 5
 
 BlendMode = c_byte
-BM_NORMAL = 0
-BM_DARKEN = 1
-BM_MULTIPLY = 2
-BM_COLOR_BURN = 3
-BM_LIGHTEN = 4
-BM_SCREEN = 5
-BM_COLOR_DODGE = 6
-BM_OVERLAY = 7
-BM_SOFT_LIGHT = 8
-BM_HARD_LIGHT = 9
-BM_DIFFERENCE = 10
-BM_EXCLUSION = 11
-BM_HUE = 12
-BM_SATURATION = 13
-BM_COLOR = 14
-BM_LUMINOSITY = 15
-BM_MASK = 16
-BM_OVERWRITE = 17
-BM_SUBTRACT_MASK = 18
-BM_EXCLUDE_MASK = 19
+NORMAL_BLEND = 0
+DARKEN_BLEND = 1
+MULTIPLY_BLEND = 2
+COLOR_BURN_BLEND = 3
+LIGHTEN_BLEND = 4
+SCREEN_BLEND = 5
+COLOR_DODGE_BLEND = 6
+OVERLAY_BLEND = 7
+SOFT_LIGHT_BLEND = 8
+HARD_LIGHT_BLEND = 9
+DIFFERENCE_BLEND = 10
+EXCLUSION_BLEND = 11
+HUE_BLEND = 12
+SATURATION_BLEND = 13
+COLOR_BLEND = 14
+LUMINOSITY_BLEND = 15
+MASK_BLEND = 16
+OVERWRITE_BLEND = 17
+SUBTRACT_MASK_BLEND = 18
+EXCLUDE_MASK_BLEND = 19
 
 PaintKind = c_byte
-PK_SOLID = 0
-PK_IMAGE = 1
-PK_IMAGE_TILED = 2
-PK_GRADIENT_LINEAR = 3
-PK_GRADIENT_RADIAL = 4
-PK_GRADIENT_ANGULAR = 5
+SOLID_PAINT = 0
+IMAGE_PAINT = 1
+TILED_IMAGE_PAINT = 2
+LINEAR_GRADIENT_PAINT = 3
+RADIAL_GRADIENT_PAINT = 4
+ANGULAR_GRADIENT_PAINT = 5
 
 WindingRule = c_byte
-WR_NON_ZERO = 0
-WR_EVEN_ODD = 1
+NON_ZERO = 0
+EVEN_ODD = 1
 
 LineCap = c_byte
-LC_BUTT = 0
-LC_ROUND = 1
-LC_SQUARE = 2
+BUTT_CAP = 0
+ROUND_CAP = 1
+SQUARE_CAP = 2
 
 LineJoin = c_byte
-LJ_MITER = 0
-LJ_ROUND = 1
-LJ_BEVEL = 2
+MITER_JOIN = 0
+ROUND_JOIN = 1
+BEVEL_JOIN = 2
 
 HorizontalAlignment = c_byte
-HA_LEFT = 0
-HA_CENTER = 1
-HA_RIGHT = 2
+LEFT_ALIGN = 0
+CENTER_ALIGN = 1
+RIGHT_ALIGN = 2
 
 VerticalAlignment = c_byte
-VA_TOP = 0
-VA_MIDDLE = 1
-VA_BOTTOM = 2
+TOP_ALIGN = 0
+MIDDLE_ALIGN = 1
+BOTTOM_ALIGN = 2
 
 TextCase = c_byte
-TC_NORMAL = 0
-TC_UPPER = 1
-TC_LOWER = 2
-TC_TITLE = 3
+NORMAL_CASE = 0
+UPPER_CASE = 1
+LOWER_CASE = 2
+TITLE_CASE = 3
 
 def check_error():
     result = dll.pixie_check_error()
@@ -213,6 +227,9 @@ class SeqFloat32(Structure):
     def clear(self):
         dll.pixie_seq_float32_clear(self)
 
+    def __iter__(self):
+        return SeqIterator(self)
+
 class SeqSpan(Structure):
     _fields_ = [("ref", c_ulonglong)]
 
@@ -246,7 +263,10 @@ class SeqSpan(Structure):
     def clear(self):
         dll.pixie_seq_span_clear(self)
 
-    def typeset(self, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, wrap = True):
+    def __iter__(self):
+        return SeqIterator(self)
+
+    def typeset(self, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN, wrap = True):
         """
         Lays out the character glyphs and returns the arrangement.
         Optional parameters:
@@ -434,7 +454,7 @@ class Image(Structure):
             raise PixieError(take_error())
         return result
 
-    def draw(self, b, transform = None, blend_mode = BM_NORMAL):
+    def draw(self, b, transform = None, blend_mode = NORMAL_BLEND):
         """
         Draws one image onto another using matrix with color blending.
         """
@@ -444,7 +464,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def mask_draw(self, mask, transform = None, blend_mode = BM_MASK):
+    def mask_draw(self, mask, transform = None, blend_mode = MASK_BLEND):
         """
         Draws a mask onto an image using a matrix with color blending.
         """
@@ -462,7 +482,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def fill_text(self, font, text, transform = None, bounds = None, h_align = HA_LEFT, v_align = VA_TOP):
+    def fill_text(self, font, text, transform = None, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN):
         """
         Typesets and fills the text. Optional parameters:
         transform: translation or matrix to apply
@@ -488,7 +508,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Typesets and strokes the text. Optional parameters:
         transform: translation or matrix to apply
@@ -508,7 +528,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Strokes the text arrangement.
         """
@@ -520,7 +540,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def fill_path(self, path, paint, transform = None, winding_rule = WR_NON_ZERO):
+    def fill_path(self, path, paint, transform = None, winding_rule = NON_ZERO):
         """
         Fills a path.
         """
@@ -530,7 +550,7 @@ class Image(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def stroke_path(self, path, paint, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def stroke_path(self, path, paint, transform = None, stroke_width = 1.0, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Strokes a path.
         """
@@ -677,7 +697,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def draw(self, b, transform = None, blend_mode = BM_MASK):
+    def draw(self, b, transform = None, blend_mode = MASK_BLEND):
         """
         Draws a mask onto a mask using a matrix with color blending.
         """
@@ -687,7 +707,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def image_draw(self, image, transform = None, blend_mode = BM_MASK):
+    def image_draw(self, image, transform = None, blend_mode = MASK_BLEND):
         """
         Draws a image onto a mask using a matrix with color blending.
         """
@@ -697,7 +717,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def fill_text(self, font, text, transform = None, bounds = None, h_align = HA_LEFT, v_align = VA_TOP):
+    def fill_text(self, font, text, transform = None, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN):
         """
         Typesets and fills the text. Optional parameters:
         transform: translation or matrix to apply
@@ -723,7 +743,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def stroke_text(self, font, text, transform = None, stroke_width = 1.0, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Typesets and strokes the text. Optional parameters:
         transform: translation or matrix to apply
@@ -743,7 +763,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def arrangement_stroke_text(self, arrangement, transform = None, stroke_width = 1.0, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Strokes the text arrangement.
         """
@@ -755,7 +775,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def fill_path(self, path, transform = None, winding_rule = WR_NON_ZERO, blend_mode = BM_NORMAL):
+    def fill_path(self, path, transform = None, winding_rule = NON_ZERO, blend_mode = NORMAL_BLEND):
         """
         Fills a path.
         """
@@ -765,7 +785,7 @@ class Mask(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def stroke_path(self, path, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None, blend_mode = BM_NORMAL):
+    def stroke_path(self, path, transform = None, stroke_width = 1.0, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None, blend_mode = NORMAL_BLEND):
         """
         Strokes a path.
         """
@@ -864,6 +884,9 @@ class Paint(Structure):
         def clear(self):
             dll.pixie_paint_gradient_handle_positions_clear(self.paint)
 
+        def __iter__(self):
+            return SeqIterator(self)
+
     @property
     def gradient_handle_positions(self):
         return self.PaintGradientHandlePositions(self)
@@ -890,6 +913,9 @@ class Paint(Structure):
 
         def clear(self):
             dll.pixie_paint_gradient_stops_clear(self.paint)
+
+        def __iter__(self):
+            return SeqIterator(self)
 
     @property
     def gradient_stops(self):
@@ -949,7 +975,7 @@ class Path(Structure):
             raise PixieError(take_error())
         return result
 
-    def fill_overlaps(self, test, transform = None, winding_rule = WR_NON_ZERO):
+    def fill_overlaps(self, test, transform = None, winding_rule = NON_ZERO):
         """
         Returns whether or not the specified point is contained in the current path.
         """
@@ -960,7 +986,7 @@ class Path(Structure):
             raise PixieError(take_error())
         return result
 
-    def stroke_overlaps(self, test, transform = None, stroke_width = 1.0, line_cap = LC_BUTT, line_join = LJ_MITER, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
+    def stroke_overlaps(self, test, transform = None, stroke_width = 1.0, line_cap = BUTT_CAP, line_join = MITER_JOIN, miter_limit = DEFAULT_MITER_LIMIT, dashes = None):
         """
         Returns whether or not the specified point is inside the area contained
         by the stroking of a path.
@@ -1205,6 +1231,9 @@ class Font(Structure):
         def clear(self):
             dll.pixie_font_paints_clear(self.font)
 
+        def __iter__(self):
+            return SeqIterator(self)
+
     @property
     def paints(self):
         return self.FontPaints(self)
@@ -1263,7 +1292,7 @@ class Font(Structure):
         result = dll.pixie_font_default_line_height(self)
         return result
 
-    def typeset(self, text, bounds = None, h_align = HA_LEFT, v_align = VA_TOP, wrap = True):
+    def typeset(self, text, bounds = None, h_align = LEFT_ALIGN, v_align = TOP_ALIGN, wrap = True):
         """
         Lays out the character glyphs and returns the arrangement.
         Optional parameters:
@@ -1484,7 +1513,7 @@ class Context(Structure):
         """
         dll.pixie_context_close_path(self)
 
-    def fill(self, winding_rule = WR_NON_ZERO):
+    def fill(self, winding_rule = NON_ZERO):
         """
         Fills the current path with the current fillStyle.
         """
@@ -1492,7 +1521,7 @@ class Context(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def path_fill(self, path, winding_rule = WR_NON_ZERO):
+    def path_fill(self, path, winding_rule = NON_ZERO):
         """
         Fills the path with the current fillStyle.
         """
@@ -1500,7 +1529,7 @@ class Context(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def clip(self, winding_rule = WR_NON_ZERO):
+    def clip(self, winding_rule = NON_ZERO):
         """
         Turns the current path into the current clipping region. The previous
         clipping region, if any, is intersected with the current or given path
@@ -1510,7 +1539,7 @@ class Context(Structure):
         if check_error():
             raise PixieError(take_error())
 
-    def path_clip(self, path, winding_rule = WR_NON_ZERO):
+    def path_clip(self, path, winding_rule = NON_ZERO):
         """
         Turns the path into the current clipping region. The previous clipping
         region, if any, is intersected with the current or given path to create
@@ -1746,7 +1775,7 @@ class Context(Structure):
         """
         dll.pixie_context_rotate(self, angle)
 
-    def is_point_in_path(self, x, y, winding_rule = WR_NON_ZERO):
+    def is_point_in_path(self, x, y, winding_rule = NON_ZERO):
         """
         Returns whether or not the specified point is contained in the current path.
         """
@@ -1755,7 +1784,7 @@ class Context(Structure):
             raise PixieError(take_error())
         return result
 
-    def path_is_point_in_path(self, path, x, y, winding_rule = WR_NON_ZERO):
+    def path_is_point_in_path(self, path, x, y, winding_rule = NON_ZERO):
         """
         Returns whether or not the specified point is contained in the current path.
         """

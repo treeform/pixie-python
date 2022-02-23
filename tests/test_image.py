@@ -24,7 +24,7 @@ def test_flips():
     image = pixie.Image(100, 100)
     path = pixie.parse_path("M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z")
     path.polygon(50, 50, 20, 5)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 0, 0, 1)
     image.fill_path(path, paint)
     image.flip_vertical()
@@ -39,7 +39,7 @@ def test_subsuper():
     image = pixie.Image(100, 100)
     path = pixie.Path()
     path.rounded_rect(10, 10, 80, 80, 10, 10, 10, 10)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 1, 1, 1)
     image.fill_path(path, paint)
     image.sub_image(0, 0, 20, 20).write_file("tests/images/sub_image.png")
@@ -61,7 +61,7 @@ def test_paths():
     path = pixie.Path()
     path.rect(25, 25, 50, 50)
 
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 0, 1, 1)
 
     fill = pixie.Image(100, 100)
@@ -98,7 +98,7 @@ def test_blur():
     path = pixie.Path()
     path.rect(25, 25, 50, 50)
 
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 1, 0, 1)
 
     image = pixie.Image(100, 100)
@@ -111,14 +111,14 @@ def test_draw():
     a = pixie.Image(100, 100)
     a_path = pixie.Path()
     a_path.rect(25, 25, 50, 50)
-    a_paint = pixie.Paint(pixie.PK_SOLID)
+    a_paint = pixie.Paint(pixie.SOLID_PAINT)
     a_paint.color = pixie.Color(1, 1, 0, 0.5)
     a.fill_path(a_path, a_paint)
 
     b = pixie.Image(100, 100)
     b_path = pixie.Path()
     b_path.rect(0, 0, 100, 50)
-    b_paint = pixie.Paint(pixie.PK_SOLID)
+    b_paint = pixie.Paint(pixie.SOLID_PAINT)
     b_paint.color = pixie.Color(1, 0, 1, 0.5)
     b.fill_path(b_path, b_paint)
 
@@ -129,7 +129,7 @@ def test_draw_mask():
     image = pixie.Image(100, 100)
     image_path = pixie.Path()
     image_path.rect(0, 0, 100, 30)
-    image_paint = pixie.Paint(pixie.PK_SOLID)
+    image_paint = pixie.Paint(pixie.SOLID_PAINT)
     image_paint.color = pixie.Color(1, 1, 1, 1)
     image.fill_path(image_path, image_paint)
 
@@ -145,7 +145,7 @@ def test_shadow():
     image = pixie.Image(100, 100)
     path = pixie.Path()
     path.rounded_rect(20, 20, 60, 60, 10, 10, 10, 10)
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 1, 1, 1)
     image.fill_path(path, paint)
     shadow = image.shadow(pixie.Vector2(0, 0), 2, 4, pixie.Color(0, 0, 0, 1))
@@ -166,7 +166,7 @@ def test_text():
     stroke.write_file("tests/images/stroke_text.png")
 
 def test_fill_gradient():
-    paint = pixie.Paint(pixie.PK_GRADIENT_LINEAR)
+    paint = pixie.Paint(pixie.LINEAR_GRADIENT_PAINT)
     paint.gradient_handle_positions.append(pixie.Vector2(0, 50))
     paint.gradient_handle_positions.append(pixie.Vector2(100, 50))
     paint.gradient_stops.append(pixie.ColorStop(pixie.Color(1, 0, 0, 1), 0))

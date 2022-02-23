@@ -7,23 +7,23 @@ def test_fields():
     assert font.size == 24
     font.line_height = 100
     assert font.line_height == 100
-    font.text_case = pixie.TC_UPPER
-    assert font.text_case == pixie.TC_UPPER
+    font.text_case = pixie.UPPER_CASE
+    assert font.text_case == pixie.UPPER_CASE
     font.underline = True
     assert font.underline
     font.strikethrough = True
     assert font.strikethrough
     font.no_kerning_adjustment = True
     assert font.no_kerning_adjustment
-    paint = pixie.Paint(pixie.PK_SOLID)
+    paint = pixie.Paint(pixie.SOLID_PAINT)
     paint.color = pixie.Color(1, 1, 0, 1)
     font.paint = paint
     assert font.paint.color == paint.color
 
 def test_paints():
     font = pixie.read_font("tests/fonts/Roboto-Regular_1.ttf")
-    paint1 = pixie.Paint(pixie.PK_SOLID)
-    paint2 = pixie.Paint(pixie.PK_GRADIENT_LINEAR)
+    paint1 = pixie.Paint(pixie.SOLID_PAINT)
+    paint2 = pixie.Paint(pixie.LINEAR_GRADIENT_PAINT)
     font.paints[0] = paint1
     font.paints.append(paint2)
     assert len(font.paints) == 2
