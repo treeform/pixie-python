@@ -11,3 +11,5 @@ nimcache
 .*
 dist
 __pycache__
+pixie_python.egg-info/
+build/
