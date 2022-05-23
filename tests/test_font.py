@@ -39,4 +39,4 @@ def test_procs():
     assert font.default_line_height() == 14
     arrangement = font.typeset("typeset")
     assert arrangement is not None
-    assert font.compute_bounds("typeset") == pixie.Vector2(39, 14)
+    assert font.layout_bounds("typeset") == pixie.Vector2(39, 14)

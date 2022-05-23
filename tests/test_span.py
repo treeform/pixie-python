@@ -12,4 +12,4 @@ def test_procs():
     spans = pixie.SeqSpan()
     spans.append(span)
     assert spans.typeset() is not None
-    assert spans.compute_bounds() == pixie.Vector2(39, 14)
+    assert spans.layout_bounds() == pixie.Vector2(39, 14)

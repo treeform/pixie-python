@@ -34,7 +34,7 @@ AUTO_LINE_HEIGHT = -1.0
 FileFormat = c_byte
 PNG_FORMAT = 0
 BMP_FORMAT = 1
-JPG_FORMAT = 2
+JPEG_FORMAT = 2
 GIF_FORMAT = 3
 QOI_FORMAT = 4
 PPM_FORMAT = 5
@@ -280,11 +280,11 @@ class SeqSpan(Structure):
         result = dll.pixie_seq_span_typeset(self, bounds, h_align, v_align, wrap)
         return result
 
-    def compute_bounds(self):
+    def layout_bounds(self):
         """
         Computes the width and height of the spans in pixels.
         """
-        result = dll.pixie_seq_span_compute_bounds(self)
+        result = dll.pixie_seq_span_layout_bounds(self)
         return result
 
 class Image(Structure):
@@ -685,7 +685,7 @@ class Mask(Structure):
 
     def invert(self):
         """
-        Inverts all of the colors and alpha.
+        Inverts all of the values - creates a negative of the mask.
         """
         dll.pixie_mask_invert(self)
 
@@ -1087,8 +1087,11 @@ class Path(Structure):
     def polygon(self, x, y, size, sides):
         """
         Adds an n-sided regular polygon at (x, y) with the parameter size.
+        Polygons "face" north.
         """
         dll.pixie_path_polygon(self, x, y, size, sides)
+        if check_error():
+            raise PixieError(take_error())
 
 class Typeface(Structure):
     _fields_ = [("ref", c_ulonglong)]
@@ -1306,11 +1309,11 @@ class Font(Structure):
         result = dll.pixie_font_typeset(self, text.encode("utf8"), bounds, h_align, v_align, wrap)
         return result
 
-    def compute_bounds(self, text):
+    def layout_bounds(self, text):
         """
         Computes the width and height of the text in pixels.
         """
-        result = dll.pixie_font_compute_bounds(self, text.encode("utf8"))
+        result = dll.pixie_font_layout_bounds(self, text.encode("utf8"))
         return result
 
 class Span(Structure):
@@ -1357,11 +1360,19 @@ class Arrangement(Structure):
     def __del__(self):
         dll.pixie_arrangement_unref(self)
 
-    def compute_bounds(self):
+    def layout_bounds(self):
         """
         Computes the width and height of the arrangement in pixels.
         """
-        result = dll.pixie_arrangement_compute_bounds(self)
+        result = dll.pixie_arrangement_layout_bounds(self)
+        return result
+
+    def compute_bounds(self, transform = None):
+        if transform is None:
+            transform = Matrix3()
+        result = dll.pixie_arrangement_compute_bounds(self, transform)
+        if check_error():
+            raise PixieError(take_error())
         return result
 
 class Context(Structure):
@@ -1703,6 +1714,8 @@ class Context(Structure):
         Adds an n-sided regular polygon at (x, y) of size to the current path.
         """
         dll.pixie_context_polygon(self, x, y, size, sides)
+        if check_error():
+            raise PixieError(take_error())
 
     def clear_rect(self, x, y, width, height):
         """
@@ -1957,8 +1970,8 @@ dll.pixie_seq_span_clear.restype = None
 dll.pixie_seq_span_typeset.argtypes = [SeqSpan, Vector2, HorizontalAlignment, VerticalAlignment, c_bool]
 dll.pixie_seq_span_typeset.restype = Arrangement
 
-dll.pixie_seq_span_compute_bounds.argtypes = [SeqSpan]
-dll.pixie_seq_span_compute_bounds.restype = Vector2
+dll.pixie_seq_span_layout_bounds.argtypes = [SeqSpan]
+dll.pixie_seq_span_layout_bounds.restype = Vector2
 
 dll.pixie_image_unref.argtypes = [Image]
 dll.pixie_image_unref.restype = None
@@ -2395,8 +2408,8 @@ dll.pixie_font_default_line_height.restype = c_float
 dll.pixie_font_typeset.argtypes = [Font, c_char_p, Vector2, HorizontalAlignment, VerticalAlignment, c_bool]
 dll.pixie_font_typeset.restype = Arrangement
 
-dll.pixie_font_compute_bounds.argtypes = [Font, c_char_p]
-dll.pixie_font_compute_bounds.restype = Vector2
+dll.pixie_font_layout_bounds.argtypes = [Font, c_char_p]
+dll.pixie_font_layout_bounds.restype = Vector2
 
 dll.pixie_span_unref.argtypes = [Span]
 dll.pixie_span_unref.restype = None
@@ -2419,8 +2432,11 @@ dll.pixie_span_set_font.restype = None
 dll.pixie_arrangement_unref.argtypes = [Arrangement]
 dll.pixie_arrangement_unref.restype = None
 
-dll.pixie_arrangement_compute_bounds.argtypes = [Arrangement]
-dll.pixie_arrangement_compute_bounds.restype = Vector2
+dll.pixie_arrangement_layout_bounds.argtypes = [Arrangement]
+dll.pixie_arrangement_layout_bounds.restype = Vector2
+
+dll.pixie_arrangement_compute_bounds.argtypes = [Arrangement, Matrix3]
+dll.pixie_arrangement_compute_bounds.restype = Rect
 
 dll.pixie_context_unref.argtypes = [Context]
 dll.pixie_context_unref.restype = None

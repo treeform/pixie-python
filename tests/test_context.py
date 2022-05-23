@@ -113,7 +113,7 @@ def test_paths():
     context.rounded_rect(0, 0, 0, 0, 0, 0, 0, 0)
     context.ellipse(0, 0, 0, 0)
     context.circle(0, 0, 0)
-    context.polygon(0, 0, 0, 0)
+    context.polygon(0, 0, 0, 3)
     context.close_path()
     assert not context.is_point_in_path(1, 1)
     assert not context.is_point_in_stroke(1, 1)

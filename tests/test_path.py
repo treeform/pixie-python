@@ -13,7 +13,7 @@ def test():
     path.rounded_rect(0, 0, 0, 0, 0, 0, 0, 0)
     path.ellipse(0, 0, 0, 0)
     path.circle(0, 0, 0)
-    path.polygon(0, 0, 0, 0)
+    path.polygon(0, 0, 0, 3)
     path.transform(pixie.Matrix3())
     path.add_path(pixie.Path())
     path.close_path()
