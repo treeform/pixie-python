@@ -6,4 +6,4 @@ def test_procs():
     spans = pixie.SeqSpan()
     spans.append(span)
     arrangement = spans.typeset()
-    assert arrangement.compute_bounds() == pixie.Vector2(39, 14)
+    assert arrangement.layout_bounds() == pixie.Vector2(39, 14)
