@@ -6,7 +6,7 @@ image.fill(pixie.Color(1, 1, 1, 1))
 path = pixie.Path()
 path.polygon(100, 100, 70, 8)
 
-paint = pixie.Paint(pixie.PK_IMAGE_TILED)
+paint = pixie.Paint(pixie.TILED_IMAGE_PAINT)
 paint.image = pixie.read_image("examples/data/baboon.png")
 paint.image_mat = pixie.scale(0.08, 0.08)
 

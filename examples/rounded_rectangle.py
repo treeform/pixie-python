@@ -3,7 +3,7 @@ import pixie
 image = pixie.Image(200, 200)
 image.fill(pixie.Color(1, 1, 1, 1))
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.Color(0, 1, 0, 1)
 
 ctx = image.new_context()
