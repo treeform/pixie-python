@@ -24,8 +24,10 @@ Format        | Read          | Write         |
 PNG           | ✅           | ✅            |
 JPEG          | ✅           |               |
 BMP           | ✅           | ✅            |
+QOI           | ✅           | ✅            |
 GIF           | ✅           |               |
 SVG           | ✅           |               |
+PPM           | ✅           | ✅            |
 
 ### Font file formats
 
