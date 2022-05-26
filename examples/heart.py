@@ -14,7 +14,7 @@ path = pixie.parse_path(
     """
 )
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.parse_color("#FC427B")
 
 image.fill_path(path, paint)

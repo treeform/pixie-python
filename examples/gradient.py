@@ -3,7 +3,7 @@ import pixie
 image = pixie.Image(200, 200)
 image.fill(pixie.Color(1, 1, 1, 1))
 
-paint = pixie.Paint(pixie.PK_GRADIENT_RADIAL)
+paint = pixie.Paint(pixie.RADIAL_GRADIENT_PAINT)
 
 paint.gradient_handle_positions.append(pixie.Vector2(100, 100))
 paint.gradient_handle_positions.append(pixie.Vector2(200, 100))

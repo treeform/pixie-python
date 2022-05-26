@@ -6,7 +6,7 @@ image.fill(pixie.Color(1, 1, 1, 1))
 path = pixie.Path()
 path.polygon(100, 100, 70, sides = 8)
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.Color(1, 1, 1, 1)
 
 polygon_image = pixie.Image(200, 200)

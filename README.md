@@ -151,7 +151,7 @@ image.arrangement_fill_text(
 ### Square
 python [examples/square.py](examples/square.py)
 ```py
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.Color(1, 0, 0, 1)
 
 ctx = image.new_context()
@@ -164,7 +164,7 @@ ctx.fill_rect(50, 50, 100, 100)
 ### Line
 python [examples/line.py](examples/line.py)
 ```py
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.parse_color("#FF5C00")
 
 ctx = image.new_context()
@@ -178,7 +178,7 @@ ctx.stroke_segment(25, 25, 175, 175)
 ### Rounded rectangle
 python [examples/rounded_rectangle.py](examples/rounded_rectangle.py)
 ```py
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.Color(0, 1, 0, 1)
 
 ctx = image.new_context()
@@ -202,7 +202,7 @@ path = pixie.parse_path(
     """
 )
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.parse_color("#FC427B")
 
 image.fill_path(path, paint)
@@ -215,7 +215,7 @@ python [examples/masking.py](examples/masking.py)
 lines = pixie.Image(200, 200)
 lines.fill(pixie.parse_color("#FC427B"))
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.parse_color("#F8D1DD")
 
 ctx = lines.new_context()
@@ -247,7 +247,7 @@ image.draw(lines)
 ### Gradient
 python [examples/gradient.py](examples/gradient.py)
 ```py
-paint = pixie.Paint(pixie.PK_GRADIENT_RADIAL)
+paint = pixie.Paint(pixie.RADIAL_GRADIENT_PAINT)
 
 paint.gradient_handle_positions.append(pixie.Vector2(100, 100))
 paint.gradient_handle_positions.append(pixie.Vector2(200, 100))
@@ -277,7 +277,7 @@ python [examples/image_tiled.py](examples/image_tiled.py)
 path = pixie.Path()
 path.polygon(100, 100, 70, 8)
 
-paint = pixie.Paint(pixie.PK_IMAGE_TILED)
+paint = pixie.Paint(pixie.TILED_IMAGE_PAINT)
 paint.image = pixie.read_image("examples/data/baboon.png")
 paint.image_mat = pixie.scale(0.08, 0.08)
 
@@ -291,7 +291,7 @@ python [examples/shadow.py](examples/shadow.py)
 path = pixie.Path()
 path.polygon(100, 100, 70, sides = 8)
 
-paint = pixie.Paint(pixie.PK_SOLID)
+paint = pixie.Paint(pixie.SOLID_PAINT)
 paint.color = pixie.Color(1, 1, 1, 1)
 
 polygon_image = pixie.Image(200, 200)
